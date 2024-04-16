@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>
+            BMI calculator
+        </title>
+        <h3>
+            BMI calculator
+        </h3>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>
+                    <label for="height">Height</label>
+                    <input type="text" id="height" placeholder="Your height in centimetres"></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="weight">Weight</label>
+                    <input type="text" id="weight" placeholder="Your weight in kilogrammes">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p id="bmiDisplay">Your BMI: </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" value="Calculate" onclick="bmiCalc();">
+                </td>
+            </tr>
+            <tr id="resultRow" style="display:none;">
+                <td>
+                    <p id="result">
+                        
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        <script src="bmi.js"></script>
+    </body>
+</html>
