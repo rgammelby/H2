@@ -1,18 +1,21 @@
 <html>
-    <head>
-        <title>Hejsa</title>
-    </head>
-    <body>
-        <p id="text">Klik på knappen, for at ændre teksten</p>
 
-        <input type="button" onclick="changePText()" value="Klik på mig!">
+<head>
+    <title>Hejsa</title>
+</head>
 
-        <script>
-            document.onload(alert("Hello, world!"));
+<body>
+    <p id="text">Klik på knappen, for at ændre teksten</p>
 
-            function changePText() {
-                document.getElementById("text").innerHTML = "Hello, world!";
-            }
-        </script>
-    </body>
+    <input type="button" onclick="changePText()" value="Klik på mig!">
+
+    <script>
+        document.onload(alert("Hello, world!"));
+
+        function changePText() {
+            document.getElementById("text").innerHTML = "Hello, world!";
+        }
+    </script>
+</body>
+
 </html>
