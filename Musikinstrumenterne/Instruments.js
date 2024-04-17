@@ -3,60 +3,79 @@ class Instrument {
         this.name = name;
     }
 
-    play(sound) {
-        console.log("You've pressed play. ");
-        let soundBite = new Audio('soundfiles/')
+    play(instrument) {
+        console.log(`Playing ${instrument} sound. `);
+        let soundBite = new Audio('soundfiles/' + instrument + ".mp3");
         soundBite.play();
     }
 }
 
-class Stringed extends Instrument {
-    constructor(numberOfStrings) {
-        this.numberOfStrings = numberOfStrings;
-    }
 
-    strings(numberOfStrings) {
-        return this.numberOfStrings;
+class Stringed extends Instrument {
+    constructor(name, numberOfStrings) {
+        super(name);
+        this.numberOfStrings = numberOfStrings;
     }
 }
 
 class Harp extends Stringed {
-    constructor(height) {
+    constructor(name, numberOfStrings, height) {
+        super(name, numberOfStrings);
         this.height = height;
-    }
-
-    properties(height) {
-        return this.height;
     }
 }
 
 class Guitar extends Stringed {
-    constructor(material) {
+    constructor(name, numberOfStrings, material) {
+        super(name, numberOfStrings);
         this.material = material;
-    }
-
-    properties(material) {
-        return this.material;
     }
 }
 
 class Saxophone extends Instrument {
-    constructor(material) {
+    constructor(name, material) {
+        super(name);
         this.material = material;
-    }
-
-    properties(material) {
-        return this.material;
     }
 }
 
 class Flute extends Instrument {
-    constructor(holes, material) {
+    constructor(name, holes, material) {
+        super(name);
         this.holes = holes;
         this.material = material;
     }
+}
 
-    properties(holes, material) {
-        return this.holes, this.material;
-    }
+function printInstrumentProperties() {
+    // instantiate instruments
+    let instruments = [
+        harp = new Harp('harp', 47, 140),
+        guitar = new Guitar('guitar', 6, "wood"),
+        sax = new Saxophone('saxophone', 'brass'),
+        flute = new Flute('flute', 8, 'tin')
+    ];
+
+    let props = document.getElementById("properties");
+    props.textContent = "";
+
+    instruments.forEach(Instrument => {
+        props.innerHTML += ` <br> Instrument: ${Instrument.name} <br>`;
+
+        if (Instrument instanceof Stringed) {
+            props.innerHTML += `Strings: ${Instrument.numberOfStrings} <br>`;
+        }
+
+        if (Instrument instanceof Harp) {
+            props.innerHTML += `Height: ${Instrument.height} cm <br>`;
+        }
+
+        if (Instrument instanceof Guitar || Instrument instanceof Saxophone || Instrument instanceof Flute) {
+            props.innerHTML += `Material: ${Instrument.material} <br>`;
+        }
+
+        if (Instrument instanceof Flute) {
+            props.innerHTML += `Holes: ${Instrument.holes} <br>`;
+        }
+    });
 }
