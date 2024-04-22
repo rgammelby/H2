@@ -401,7 +401,8 @@ begin
 end//
 delimiter ;
 
+/*
 insert into Author
 values (default, 'Halløj');
 
-select * from bogreden_log;    
+select * from bogreden_log;*/
