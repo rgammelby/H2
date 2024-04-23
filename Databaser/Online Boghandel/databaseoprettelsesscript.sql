@@ -9,6 +9,8 @@ grant all privileges on OnlineBookStore.* to 'admin'@'localhost' with grant opti
 -- ensures the rest of the script is applied to the correct database
 use onlinebookstore;
 
+-- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES 
+
 -- starts creating tables with no outside references
 create table Author (
 	author_id smallint primary key auto_increment,  -- using smallints to conserve space, as i don't figure i'll have very many entries, otherwise int instead of smallint
@@ -20,16 +22,6 @@ create table Genre (
     name varchar(256) not null
 );
 
-create table City (
-	city_id smallint primary key auto_increment,
-    name varchar(256) not null
-);
-    
-create table Postcode (
-	postcode_id smallint primary key auto_increment,
-    postcode smallint not null  -- smallint to ensure mathematical operations are available on postcodes
-);
-    
 create table Book (
 	book_id smallint primary key auto_increment,
     title varchar(256) not null,
@@ -42,10 +34,8 @@ create table Book (
     
 create table Address(
 	address_id smallint primary key auto_increment,
-    postcode smallint not null,
-    city smallint not null,
-    foreign key (postcode) references Postcode(postcode_id),
-    foreign key (city) references City(city_id)
+    postcode varchar(4) not null,
+    city varchar(50) not null
 );
     
 create table Customer (
@@ -81,10 +71,18 @@ create table bogreden_log (
     table_name varchar(64),
     log_time timestamp not null default current_timestamp
 );
+
+load data infile 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/postnumre.csv'
+into table Address
+fields terminated by ','
+lines terminated by '\n'
+ignore 1 lines (postcode, city);
     
 show tables;
 
--- TRIGGERS:
+-- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES 
+
+-- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS 
 
 -- AUTHOR TRIGGERS
 delimiter //
@@ -96,6 +94,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.author_id, 'INSERT', 'Author');
 end;
+//
 
 create trigger author_update_trigger
 after update
@@ -105,6 +104,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.author_id, 'UPDATE', 'Author');
 end;
+//
 
 create trigger author_delete_trigger
 after delete
@@ -113,7 +113,7 @@ for each row
 begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (old.author_id, 'DELETE', 'Author');
-end//
+end;//
 delimiter ;
 
 -- GENRE TRIGGERS
@@ -126,6 +126,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.genre_id, 'INSERT', 'Genre');
 end;
+//
 
 create trigger genre_update_trigger
 after update
@@ -135,6 +136,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.genre_id, 'UPDATE', 'Genre');
 end;
+//
 
 create trigger genre_delete_trigger
 after delete
@@ -143,67 +145,7 @@ for each row
 begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (old.genre_id, 'DELETE', 'Genre');
-end//
-delimiter ;
-
--- CITY TRIGGERS
-delimiter //
-create trigger city_create_trigger
-after insert
-on city
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.city_id, 'INSERT', 'City');
-end;
-
-create trigger city_update_trigger
-after update
-on city
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.city_id, 'UPDATE', 'City');
-end;
-
-create trigger city_delete_trigger
-after delete
-on city
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.city_id, 'DELETE', 'City');
-end//
-delimiter ;
-
--- POSTCODE TRIGGERS
-delimiter //
-create trigger postcode_create_trigger
-after insert
-on postcode
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.postcode_id, 'INSERT', 'Postcode');
-end;
-
-create trigger _update_trigger
-after update
-on postcode
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.postcode_id, 'UPDATE', 'Postcode');
-end;
-
-create trigger _delete_trigger
-after delete
-on postcode
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.postcode_id, 'DELETE', 'Postcode');
-end//
+end;//
 delimiter ;
 
 -- BOOK TRIGGERS
@@ -216,6 +158,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.book_id, 'INSERT', 'Book');
 end;
+//
 
 create trigger book_update_trigger
 after update
@@ -225,6 +168,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.book_id, 'UPDATE', 'Book');
 end;
+//
 
 create trigger book_delete_trigger
 after delete
@@ -233,7 +177,7 @@ for each row
 begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (old.book_id, 'DELETE', 'Book');
-end//
+end;//
 delimiter ;
 
 -- ADDRESS TRIGGERS
@@ -246,6 +190,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.address_id, 'INSERT', 'Address');
 end;
+//
 
 create trigger address_update_trigger
 after update
@@ -255,6 +200,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.address_id, 'UPDATE', 'Address');
 end;
+//
 
 create trigger address_delete_trigger
 after delete
@@ -263,7 +209,7 @@ for each row
 begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (old.address_id, 'DELETE', 'Address');
-end//
+end;//
 delimiter ;
 
 -- CUSTOMER TRIGGERS
@@ -276,6 +222,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.customer_id, 'INSERT', 'Customer');
 end;
+//
 
 create trigger customer_update_trigger
 after update
@@ -285,6 +232,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.customer_id, 'UPDATE', 'Customer');
 end;
+//
 
 create trigger customer_delete_trigger
 after delete
@@ -293,7 +241,7 @@ for each row
 begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (old.customer_id, 'DELETE', 'Customer');
-end//
+end;//
 delimiter ;
 
 -- PURCHASE TRIGGERS
@@ -306,6 +254,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.order_id, 'INSERT', 'Purchase');
 end;
+//
 
 create trigger purchase_update_trigger
 after update
@@ -315,6 +264,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.order_id, 'UPDATE', 'Purchase');
 end;
+//
 
 create trigger purchase_delete_trigger
 after delete
@@ -323,7 +273,7 @@ for each row
 begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (old.order_id, 'DELETE', 'Purchase');
-end//
+end;//
 delimiter ;
 
 -- BOOKORDER TRIGGERS
@@ -336,6 +286,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.order_id, 'INSERT', 'BookOrder');
 end;
+//
 
 create trigger bookorder_update_trigger
 after update
@@ -345,6 +296,7 @@ begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (new.order_id, 'UPDATE', 'BookOrder');
 end;
+//
 
 create trigger bookorder_delete_trigger
 after delete
@@ -353,11 +305,12 @@ for each row
 begin
 	insert into bogreden_log (id_key, change_type , table_name)
     values (old.order_id, 'DELETE', 'BookOrder');
-end//
+end;//
 delimiter ;
 
--- STORED PROCEDURES
+-- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS 
 
+-- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS 
 -- insert statement for later procedures to work
 insert into Author
 values (default, 'Hejsa');
@@ -370,17 +323,17 @@ insert into Book
 values (default, 'Hej Bog', 1, 100, 1);
 
 -- insert statement for GetCustomerInfoByCustomerName to work
-insert into City
-values (default, 'Dyssegård');
-insert into Postcode
-values (default, 2870);
-insert into Address
-values (default, 1, 1);
-insert into Customer
-values (default, 'Sascha', 's@mail.dk', 'Søborg Hovedgade 1', 1);
 
+insert into Customer
+values (default, 'Sascha', 's@mail.dk', 'Søborg Hovedgade 1', (select address_id from Address where postcode = '2870'));
+
+-- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS -- TEST INSERTS 
+
+-- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES
 
 -- fetches logs made in a span of dates 
+drop procedure if exists GetLogsBetweenDates;
+
 delimiter //
 create procedure GetLogsBetweenDates (IN firstDay INT, IN firstMonth INT, IN firstYear varchar(4), IN lastDay INT, IN lastMonth INT, IN lastYear varchar(4))
 begin
@@ -397,6 +350,8 @@ delimiter ;
 call GetLogsBetweenDates('23', '04', '', '27', '04', '');
 
 -- get books by author
+drop procedure if exists GetBooksByAuthor;
+
 delimiter //
 create procedure GetBooksByAuthor (in authorName varchar(256))
 begin 
@@ -411,6 +366,8 @@ delimiter ;
 call GetBooksByAuthor('Hejsa');
 
 -- get author of book
+drop procedure if exists GetAuthorByBookTitle;
+
 delimiter //
 create procedure GetAuthorByBookTitle (in bookTitle varchar(256)) 
 begin
@@ -424,14 +381,14 @@ delimiter ;
 call GetAuthorByBookTitle('Hej Bog');
 
 -- get customer info by customer
+drop procedure if exists GetCustomerInfoByCustomerName;
+
 delimiter //
 create procedure GetCustomerInfoByCustomerName (in customerName varchar(256))
 begin
-	select c.name as Name, c.email as 'E-mail', c.road_and_number as Address, ci.name as City, p.postcode as Postcode
+	select c.name as Name, c.email as 'E-mail', c.road_and_number as Address, a.postcode as 'Zip Code', a.city as City
     from Customer c
     join Address a on c.address = a.address_id
-    join City ci on a.city = ci.city_id
-    join Postcode p on a.postcode = p.postcode_id
     where c.name = customerName;
 end //
 delimiter ;
@@ -439,6 +396,8 @@ delimiter ;
 call GetCustomerInfoByCustomerName('Sascha');
 
 -- get orders by customer
+drop procedure if exists GetOrdersByCustomer;
+
 delimiter //
 create procedure GetOrdersByCustomer (in customerName varchar(256))
 begin
@@ -450,6 +409,8 @@ end //
 delimiter ;
 
 -- get book info by book
+drop procedure if exists GetBookInfoByBookTitle;
+
 delimiter //
 create procedure GetBookInfoByBookTitle (in bookTitle varchar(256))
 begin
@@ -463,4 +424,4 @@ delimiter ;
 
 call GetBookInfoByBookTitle('Hej Bog');
 
--- STORED PROCEDURES
+-- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES
