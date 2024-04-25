@@ -57,16 +57,16 @@ This procedure displays the author associated with a specific book that exists i
 
 This procedure displays all stored information regarding a specific user/customer.
 
-The customerName variable must contain the user's name.
+The customerLastName variable must contain the user's last name.
 
 
 ### GetOrdersByCustomer (
-    IN customerName VARCHAR(256)
+    IN customerLastName VARCHAR(256)
 )
 
 This procedure displays all orders made by a specific customer.
 
-The customerName variable must contain the user's name.
+The customerLastName variable must contain the user's last name.
 
 
 ### GetBookInfoByBookTitle (
