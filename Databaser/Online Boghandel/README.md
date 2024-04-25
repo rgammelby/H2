@@ -45,4 +45,4 @@ If you choose to execute the individual scripts via shell, they should be execut
 4) `storedprocedures.sql`
 5) `dummydata.sql`
 
-Note, that if you choose to execute the `complete.sql` file instead, procedure calls to test stored procedures exist under a comment at the bottom of the page.
+Note, that if you choose to execute the `database_script.sql` file instead, procedure calls to test stored procedures exist under a comment at the bottom of the page.
