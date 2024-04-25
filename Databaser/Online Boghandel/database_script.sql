@@ -617,7 +617,7 @@ DROP PROCEDURE IF EXISTS GetBooksByAuthor;
 DELIMITER //
 CREATE PROCEDURE GetBooksByAuthor (IN authorName VARCHAR(256))
 BEGIN 
-	SELECT DISTINCT b.title AS Title, b.price AS 'Price (kr.)', concat(a.first_name, a.last_name) AS Author 
+	SELECT DISTINCT b.title AS Title, b.price AS 'Price (kr.)', CONCAT(a.first_name, a.last_name) AS Author 
     FROM Book b
     JOIN Author a 
     ON b.author = a.author_id
@@ -644,7 +644,7 @@ DROP PROCEDURE IF EXISTS GetCustomerInfoByCustomerName;
 DELIMITER //
 CREATE PROCEDURE GetCustomerInfoByCustomerName (IN customerName VARCHAR(256))
 BEGIN
-	SELECT c.name AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Zip Code', a.city AS City
+	SELECT c.name AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Postcode', a.city AS City
     FROM Customer c
     JOIN Address a ON c.address = a.address_id
     WHERE c.name LIKE CONCAT('%', customerName, '%');
@@ -671,7 +671,7 @@ DROP PROCEDURE IF EXISTS GetBookInfoByBookTitle;
 DELIMITER //
 CREATE PROCEDURE GetBookInfoByBookTitle (IN bookTitle VARCHAR(256))
 BEGIN
-	SELECT b.title AS Title, concat(a.first_name, a.last_name) AS Author, b.price AS 'Price (kr.)', g.name AS Genre
+	SELECT b.title AS Title, CONCAT(a.first_name, a.last_name) AS Author, b.price AS 'Price (kr.)', g.name AS Genre
     FROM Book b
     JOIN Author a ON b.author = a.author_id
     JOIN Genre g ON b.genre = g.genre_id
