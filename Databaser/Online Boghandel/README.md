@@ -35,3 +35,14 @@ When the database creation script or the complete script is run, an admin with a
 MySQL has fairly strict import requirements - one of those being that the imported data must be placed in a specific folder located, on my machine/OS, at path: `C:/ProgramData/MySQL/MySQL Server 8.0/Uploads`.
 
 Please note that despite running Windows, the path must be written with forward slash `/` rather than the standard for Windows backslash `\`. Otherwise, the script will not run.
+
+### Execute order
+
+If you choose to execute the individual scripts via shell, they should be executed in this order:
+1) `databasecreation.sql`
+2) `tablecreation.sql`
+3) `triggers.sql`
+4) `storedprocedures.sql`
+5) `dummydata.sql`
+
+Note, that if you choose to execute the `complete.sql` file instead, procedure calls to test stored procedures exist under a comment at the bottom of the page.
