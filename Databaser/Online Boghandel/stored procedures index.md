@@ -51,8 +51,8 @@ The authorName variable can contain either a first or a last name, if any match,
 This procedure displays the author associated with a specific book that exists in the database.
 
 
-### GetCustomerInfoByCustomerName (
-    IN customerName VARCHAR(256)
+### GetCustomerInfoByCustomerLastName (
+    IN customerLastName VARCHAR(256)
 )
 
 This procedure displays all stored information regarding a specific user/customer.

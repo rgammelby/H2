@@ -49,7 +49,7 @@ CREATE PROCEDURE GetLogsBetweenDates (
 BEGIN
     IF firstYear = '' THEN SET firstYear = YEAR(CURDATE()); END IF;
     IF lastYear = '' THEN SET lastYear = YEAR(CURDATE()); END IF;
-    SELECT log_id, change_type, table_name, id_key, log_time 
+    SELECT log_id as 'Log no.', change_type, table_name, id_key as Id, log_time as 'Time and Date' 
     FROM bogreden_log
     WHERE log_time BETWEEN CONCAT(firstYear, '-', firstMonth, '-', firstDay)
     AND CONCAT(lastYear, '-', lastMonth, '-', lastDay)
@@ -63,7 +63,7 @@ DROP PROCEDURE IF EXISTS GetBooksByAuthor;
 DELIMITER //
 CREATE PROCEDURE GetBooksByAuthor (IN authorName VARCHAR(256))
 BEGIN 
-	SELECT DISTINCT b.title AS Title, b.price AS 'Price (kr.)', concat(a.first_name, a.last_name) AS Author 
+	SELECT DISTINCT b.title AS Title, b.price AS 'Price (kr.)', CONCAT(a.first_name, a.last_name) AS Author 
     FROM Book b
     JOIN Author a 
     ON b.author = a.author_id
@@ -88,12 +88,12 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetCustomerInfoByCustomerName;
 
 DELIMITER //
-CREATE PROCEDURE GetCustomerInfoByCustomerName (IN customerName VARCHAR(256))
+CREATE PROCEDURE GetCustomerInfoByCustomerLastName (IN customerLastName VARCHAR(256))
 BEGIN
-	SELECT c.name AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Zip Code', a.city AS City
+	SELECT CONCAT(c.first_name, c.last_name) AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Postcode', a.city AS City
     FROM Customer c
     JOIN Address a ON c.address = a.address_id
-    WHERE c.name LIKE CONCAT('%', customerName, '%');
+    WHERE c.last_name LIKE CONCAT('%', customerLastName, '%');
 END //
 DELIMITER ;
 
@@ -101,13 +101,13 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetOrdersByCustomer;
 
 DELIMITER //
-CREATE PROCEDURE GetOrdersByCustomer (IN customerName VARCHAR(256))
+CREATE PROCEDURE GetOrdersByCustomer (IN customerLastName VARCHAR(256))
 BEGIN
 	SELECT p.order_number, b.title, c.name FROM BookOrder o
     JOIN Purchase p ON o.order_number = p.order_id
     JOIN Customer c ON p.customer = c.customer_id
     JOIN Book b ON o.book = b.book_id
-    WHERE c.name LIKE CONCAT('%', customerName, '%');
+    WHERE c.name LIKE CONCAT('%', customerLastName, '%');
 END //
 DELIMITER ;
 
@@ -117,7 +117,7 @@ DROP PROCEDURE IF EXISTS GetBookInfoByBookTitle;
 DELIMITER //
 CREATE PROCEDURE GetBookInfoByBookTitle (IN bookTitle VARCHAR(256))
 BEGIN
-	SELECT b.title AS Title, concat(a.first_name, a.last_name) AS Author, b.price AS 'Price (kr.)', g.name AS Genre
+	SELECT b.title AS Title, CONCAT(a.first_name, a.last_name) AS Author, b.price AS 'Price (kr.)', g.name AS Genre
     FROM Book b
     JOIN Author a ON b.author = a.author_id
     JOIN Genre g ON b.genre = g.genre_id
@@ -129,14 +129,15 @@ DROP PROCEDURE IF EXISTS CreateNewUser;
 
 DELIMITER //
 CREATE PROCEDURE CreateNewUser (
-    IN customerName VARCHAR(256), 
+    IN customerFirstName VARCHAR(256), 
+    IN customerLastName VARCHAR(256),
     IN customerMail VARCHAR(256), 
     IN customerAddress VARCHAR(256), 
     IN addressIdFromPostcode SMALLINT
 )
 BEGIN
 	INSERT INTO Customer
-    VALUES (DEFAULT, customerName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
+    VALUES (DEFAULT, CONCAT(customerFirstName, ' '), customerLastName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
 END //
 DELIMITER ;
 
