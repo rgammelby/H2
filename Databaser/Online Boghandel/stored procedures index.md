@@ -2,7 +2,9 @@
 
 ## The database script contains several Stored Procedures for inserting and extracting data, outlined below:
 
-### GenerateOrderNumber (OUT orderNumber INT)
+### GenerateOrderNumber (
+    OUT orderNumber INT
+)
 
 This procedure generates and returns a random order number 6 characters long. 
 It is used when creating a new order when a customer makes a purchase. 
@@ -10,7 +12,9 @@ It is used when creating a new order when a customer makes a purchase.
 The order number is unique and all purchased books in a single order is related to one order number.
 
 
-### CreateNewOrder (IN customerName VARCHAR(256))
+### CreateNewOrder (
+    IN customerName VARCHAR(256)
+)
 
 This procedure inserts a new order with a randomly generated order number.
 
@@ -31,33 +35,43 @@ Variables for year are optional. If no year variable is entered, the procedure w
 Day & month inputs are not optional.
 
 
-### GetBooksByAuthor (IN authorName VARCHAR(256))
+### GetBooksByAuthor (
+    IN authorName VARCHAR(256)
+)
 
 This procedure displays all books written by a certain author.
 
 The authorName variable can contain either a first or a last name, if any match, it will display books associated with that author.
 
 
-### GetAuthorByBookTitle (IN bookTitle VARCHAR(256))
+### GetAuthorByBookTitle (
+    IN bookTitle VARCHAR(256)
+)
 
 This procedure displays the author associated with a specific book that exists in the database.
 
 
-### GetCustomerInfoByCustomerName (IN customerName VARCHAR(256))
+### GetCustomerInfoByCustomerName (
+    IN customerName VARCHAR(256)
+)
 
 This procedure displays all stored information regarding a specific user/customer.
 
 The customerName variable must contain the user's name.
 
 
-### GetOrdersByCustomer (IN customerName VARCHAR(256))
+### GetOrdersByCustomer (
+    IN customerName VARCHAR(256)
+)
 
 This procedure displays all orders made by a specific customer.
 
 The customerName variable must contain the user's name.
 
 
-### GetBookInfoByBookTitle (IN bookTitle VARCHAR(256))
+### GetBookInfoByBookTitle (
+    IN bookTitle VARCHAR(256)
+)
 
 This procedure displays all information associated with a particular book title (author, price, genre).
 
@@ -78,7 +92,10 @@ The procedure takes the user's name, e-mail address, actual address and city ass
 A relation is automatically created to the Address table; when the procedure is called with a postcode, the procedure will assign the new user an address_id which contains a postcode and city.
 
 
-### CreateNewAuthor (IN authorName VARCHAR(256), IN authorLastName varchar(256))
+### CreateNewAuthor (
+    IN authorName VARCHAR(256), 
+    IN authorLastName varchar(256)
+)
 
 This procedure inserts a new author into the database. It takes the author's first and last names as parameters.
 
@@ -87,7 +104,9 @@ It is not necessary to add a trailing space after the first name; this is automa
 The new author will not be created if it already exists in the database.
 
 
-### CreateNewGenre (IN genreName VARCHAR(50))
+### CreateNewGenre (
+    IN genreName VARCHAR(50)
+)
 
 This procedure inserts a new genre into the database with the genre's name as a parameter.
 
@@ -109,7 +128,10 @@ If the author and/or genre does not exist in the database, they will be created 
 The new book will not be created if it already exists in the database.
 
 
-### CreateNewBookOrder (IN orderNumber SMALLINT, IN orderedBook SMALLINT)
+### CreateNewBookOrder (
+    IN orderNumber SMALLINT, 
+    IN orderedBook SMALLINT
+)
 
 This procedure is meant to be called once per book when a customer places a new order.
 
