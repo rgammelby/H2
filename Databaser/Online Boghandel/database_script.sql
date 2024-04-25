@@ -62,6 +62,7 @@ CREATE TABLE Purchase (
 );
 CREATE INDEX order_index ON Purchase(order_number) USING BTREE;
 
+	-- Table for n -> n relation (Book & Order)
 CREATE TABLE BookOrder (
 	order_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
     order_number SMALLINT NOT NULL,
@@ -69,6 +70,7 @@ CREATE TABLE BookOrder (
     FOREIGN KEY (order_number) REFERENCES Purchase(order_id),
     FOREIGN KEY (book) REFERENCES Book(book_id)
 );
+CREATE INDEX bookorder_index ON BookOrder(order_number) USING BTREE;
     
     -- Log table
 CREATE TABLE bogreden_log (
@@ -78,6 +80,9 @@ CREATE TABLE bogreden_log (
     table_name VARCHAR(64),
     log_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX change_type_index ON bogreden_log(change_type) USING BTREE;
+CREATE INDEX table_name_index ON bogreden_log(table_name) USING BTREE;
+CREATE INDEX log_time_index ON bogreden_log(log_time) USING BTREE;
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/postnumre.csv'
 INTO TABLE Address
@@ -716,7 +721,8 @@ BEGIN
     VALUES (DEFAULT, bookTitle, authorId, bookPrice, genreId);
 END //
 DELIMITER ;
-
+-- select * from book;
+CALL CreateNewBook('The Hobbit', 'J. R. R. Tolkien', 300, 'Fantasy');
 -- CALL CreateNewBook('A Game of Thrones', 'George R. R. Martin', 100, 'Fantasy');
 -- CALL CreateNewBook('A Clash of Kings', 'George R. R. Martin', 120, 'Fantasy');
 
