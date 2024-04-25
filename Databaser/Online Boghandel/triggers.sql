@@ -1,271 +1,448 @@
--- TRIGGERS:
+-- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS 
+
+USE OnlineBookStore;
 
 -- AUTHOR TRIGGERS
-delimiter //
-create trigger author_create_trigger
-after insert
-on Author
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.author_id, 'INSERT', 'Author');
-end;
+	-- AFTER TRIGGERS
+    -- Logs successful change attempts
+DELIMITER //
+CREATE TRIGGER author_create_trigger
+AFTER INSERT
+ON Author
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.author_id, 'Insert successful. ', 'Author');
+END;
+//
 
-create trigger author_update_trigger
-after update
-on Author
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.author_id, 'UPDATE', 'Author');
-end;
+CREATE TRIGGER author_update_trigger
+AFTER UPDATE
+ON Author
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.author_id, 'Update successful. ', 'Author');
+END;
+//
 
-create trigger author_delete_trigger
-after delete
-on Author
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.author_id, 'DELETE', 'Author');
-end//
-delimiter ;
+CREATE TRIGGER author_delete_trigger
+AFTER DELETE
+ON Author
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.author_id, 'Delete successful. ', 'Author');
+END;//
+
+-- BEFORE TRIGGERS
+	-- Logs attempts before success or failure
+CREATE TRIGGER author_before_create_trigger
+BEFORE INSERT
+ON Author
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.author_id, 'Attempting insert... ', 'Author');
+END;
+//
+
+CREATE TRIGGER author_before_update_trigger
+BEFORE UPDATE
+ON Author
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.author_id, 'Attempting update... ', 'Author');
+END;
+//
+
+CREATE TRIGGER author_before_delete_trigger
+BEFORE DELETE
+ON Author
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.author_id, 'Attempting delete... ', 'Author');
+END;//
+DELIMITER ;
 
 -- GENRE TRIGGERS
-delimiter //
-create trigger genre_create_trigger
-after insert
-on Genre
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.genre_id, 'INSERT', 'Genre');
-end;
+DELIMITER //
+CREATE TRIGGER genre_create_trigger
+AFTER INSERT
+ON Genre
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.genre_id, 'Insert successful. ', 'Genre');
+END;
+//
 
-create trigger genre_update_trigger
-after update
-on Genre
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.genre_id, 'UPDATE', 'Genre');
-end;
+CREATE TRIGGER genre_update_trigger
+AFTER UPDATE
+ON Genre
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.genre_id, 'Update successful. ', 'Genre');
+END;
+//
 
-create trigger genre_delete_trigger
-after delete
-on Genre
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.genre_id, 'DELETE', 'Genre');
-end//
-delimiter ;
+CREATE TRIGGER genre_delete_trigger
+AFTER DELETE
+ON Genre
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.genre_id, 'Delete successful. ', 'Genre');
+END;//
 
--- CITY TRIGGERS
-delimiter //
-create trigger city_create_trigger
-after insert
-on city
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.city_id, 'INSERT', 'City');
-end;
+-- BEFORE TRIGGERS
+DELIMITER //
+CREATE TRIGGER genre_before_create_trigger
+BEFORE INSERT
+ON Genre
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.genre_id, 'Attempting insert... ', 'Genre');
+END;
+//
 
-create trigger city_update_trigger
-after update
-on city
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.city_id, 'UPDATE', 'City');
-end;
+CREATE TRIGGER genre_before_update_trigger
+BEFORE UPDATE
+ON Genre
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.genre_id, 'Attempting update... ', 'Genre');
+END;
+//
 
-create trigger city_delete_trigger
-after delete
-on city
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.city_id, 'DELETE', 'City');
-end//
-delimiter ;
-
--- POSTCODE TRIGGERS
-delimiter //
-create trigger postcode_create_trigger
-after insert
-on postcode
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.postcode_id, 'INSERT', 'Postcode');
-end;
-
-create trigger _update_trigger
-after update
-on postcode
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.postcode_id, 'UPDATE', 'Postcode');
-end;
-
-create trigger _delete_trigger
-after delete
-on postcode
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.postcode_id, 'DELETE', 'Postcode');
-end//
-delimiter ;
+CREATE TRIGGER genre_before_delete_trigger
+BEFORE DELETE
+ON Genre
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.genre_id, 'Attempting delete... ', 'Genre');
+END;//
+DELIMITER ;
 
 -- BOOK TRIGGERS
-delimiter //
-create trigger book_create_trigger
-after insert
-on book
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.book_id, 'INSERT', 'Book');
-end;
+DELIMITER //
+CREATE TRIGGER book_create_trigger
+AFTER INSERT
+ON book
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.book_id, 'Insert successful. ', 'Book');
+END;
+//
 
-create trigger book_update_trigger
-after update
-on book
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.book_id, 'UPDATE', 'Book');
-end;
+CREATE TRIGGER book_update_trigger
+AFTER UPDATE
+ON book
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.book_id, 'Update successful. ', 'Book');
+END;
+//
 
-create trigger book_delete_trigger
-after delete
-on book
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.book_id, 'DELETE', 'Book');
-end//
-delimiter ;
+CREATE TRIGGER book_delete_trigger
+AFTER DELETE
+ON book
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.book_id, 'Delete successful. ', 'Book');
+END;//
+
+-- BEFORE TRIGGERS:
+DELIMITER //
+CREATE TRIGGER book_before_create_trigger
+BEFORE INSERT
+ON book
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.book_id, 'Attempting insert... ', 'Book');
+END;
+//
+
+CREATE TRIGGER book_before_update_trigger
+BEFORE UPDATE
+ON book
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.book_id, 'Attempting update... ', 'Book');
+END;
+//
+
+CREATE TRIGGER book_before_delete_trigger
+BEFORE DELETE
+ON book
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.book_id, 'Attempting delete... ', 'Book');
+END;//
+DELIMITER ;
 
 -- ADDRESS TRIGGERS
-delimiter //
-create trigger address_create_trigger
-after insert
-on address
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.address_id, 'INSERT', 'Address');
-end;
+DELIMITER //
+CREATE TRIGGER address_create_trigger
+AFTER INSERT
+ON address
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.address_id, 'Insert successful. ', 'Address');
+END;
+//
 
-create trigger address_update_trigger
-after update
-on address
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.address_id, 'UPDATE', 'Address');
-end;
+CREATE TRIGGER address_update_trigger
+AFTER UPDATE
+ON address
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.address_id, 'Update successful. ', 'Address');
+END;
+//
 
-create trigger address_delete_trigger
-after delete
-on address
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.address_id, 'DELETE', 'Address');
-end//
-delimiter ;
+CREATE TRIGGER address_delete_trigger
+AFTER DELETE
+ON address
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.address_id, 'Delete successful. ', 'Address');
+END;//
+
+-- BEFORE TRIGGERS:
+DELIMITER //
+CREATE TRIGGER address_before_create_trigger
+BEFORE INSERT
+ON address
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.address_id, 'Attempting insert... ', 'Address');
+END;
+//
+
+CREATE TRIGGER address_before_update_trigger
+BEFORE UPDATE
+ON address
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.address_id, 'Attempting update... ', 'Address');
+END;
+//
+
+CREATE TRIGGER address_before_delete_trigger
+BEFORE DELETE
+ON address
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.address_id, 'Attempting delete... ', 'Address');
+END;//
+DELIMITER ;
 
 -- CUSTOMER TRIGGERS
-delimiter //
-create trigger customer_create_trigger
-after insert
-on customer
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.customer_id, 'INSERT', 'Customer');
-end;
+DELIMITER //
+CREATE TRIGGER customer_create_trigger
+AFTER INSERT
+ON customer
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.customer_id, 'Insert successful. ', 'Customer');
+END;
+//
 
-create trigger customer_update_trigger
-after update
-on customer
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.customer_id, 'UPDATE', 'Customer');
-end;
+CREATE TRIGGER customer_update_trigger
+AFTER UPDATE
+ON customer
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.customer_id, 'Update successful. ', 'Customer');
+END;
+//
 
-create trigger customer_delete_trigger
-after delete
-on customer
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.customer_id, 'DELETE', 'Customer');
-end//
-delimiter ;
+CREATE TRIGGER customer_delete_trigger
+AFTER DELETE
+ON customer
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.customer_id, 'Delete successful. ', 'Customer');
+END;//
+
+-- BEFORE TRIGGERS: 
+DELIMITER //
+CREATE TRIGGER customer_before_create_trigger
+BEFORE INSERT
+ON customer
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.customer_id, 'Attempting insert... ', 'Customer');
+END;
+//
+
+CREATE TRIGGER customer_before_update_trigger
+BEFORE UPDATE
+ON customer
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.customer_id, 'Attempting update... ', 'Customer');
+END;
+//
+
+CREATE TRIGGER customer_before_delete_trigger
+BEFORE DELETE
+ON customer
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.customer_id, 'Attempting delete... ', 'Customer');
+END;//
+DELIMITER ;
 
 -- PURCHASE TRIGGERS
-delimiter //
-create trigger purchase_create_trigger
-after insert
-on purchase
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.order_id, 'INSERT', 'Purchase');
-end;
+DELIMITER //
+CREATE TRIGGER purchase_create_trigger
+AFTER INSERT
+ON purchase
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.order_id, 'Insert successful. ', 'Purchase');
+END;
+//
 
-create trigger purchase_update_trigger
-after update
-on purchase
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.order_id, 'UPDATE', 'Purchase');
-end;
+CREATE TRIGGER purchase_update_trigger
+AFTER UPDATE
+ON purchase
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.order_id, 'Update successful. ', 'Purchase');
+END;
+//
 
-create trigger purchase_delete_trigger
-after delete
-on purchase
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.order_id, 'DELETE', 'Purchase');
-end//
-delimiter ;
+CREATE TRIGGER purchase_delete_trigger
+AFTER DELETE
+ON purchase
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.order_id, 'Delete successful. ', 'Purchase');
+END;//
+
+-- BEFORE TRIGGERS:
+DELIMITER //
+CREATE TRIGGER purchase_before_create_trigger
+BEFORE INSERT
+ON purchase
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.order_id, 'Attempting insert... ', 'Purchase');
+END;
+//
+
+CREATE TRIGGER purchase_before_update_trigger
+BEFORE UPDATE
+ON purchase
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.order_id, 'Attempting update... ', 'Purchase');
+END;
+//
+
+CREATE TRIGGER purchase_before_delete_trigger
+BEFORE DELETE
+ON purchase
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.order_id, 'Attempting delete... ', 'Purchase');
+END;//
+DELIMITER ;
 
 -- BOOKORDER TRIGGERS
-delimiter //
-create trigger bookorder_create_trigger
-after insert
-on bookorder
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.order_id, 'INSERT', 'BookOrder');
-end;
+DELIMITER //
+CREATE TRIGGER bookorder_create_trigger
+AFTER INSERT
+ON bookorder
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.order_id, 'Insert successful. ', 'BookOrder');
+END;
+//
 
-create trigger bookorder_update_trigger
-after update
-on bookorder
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (new.order_id, 'UPDATE', 'BookOrder');
-end;
+CREATE TRIGGER bookorder_update_trigger
+AFTER UPDATE
+ON bookorder
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.order_id, 'Update successful. ', 'BookOrder');
+END;
+//
 
-create trigger bookorder_delete_trigger
-after delete
-on bookorder
-for each row
-begin
-	insert into bogreden_log (id_key, change_type , table_name)
-    values (old.order_id, 'DELETE', 'BookOrder');
-end//
-delimiter ;
+CREATE TRIGGER bookorder_delete_trigger
+AFTER DELETE
+ON bookorder
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.order_id, 'Delete successful. ', 'BookOrder');
+END;//
+
+-- BEFORE TRIGGERS:
+DELIMITER //
+CREATE TRIGGER bookorder_before_create_trigger
+BEFORE INSERT
+ON bookorder
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.order_id, 'Attempting insert... ', 'BookOrder');
+END;
+//
+
+CREATE TRIGGER bookorder_before_update_trigger
+BEFORE UPDATE
+ON bookorder
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (NEW.order_id, 'Attempting update... ', 'BookOrder');
+END;
+//
+
+CREATE TRIGGER bookorder_before_delete_trigger
+BEFORE DELETE
+ON bookorder
+FOR EACH ROW
+BEGIN
+	INSERT INTO bogreden_log (id_key, change_type , table_name)
+    VALUES (OLD.order_id, 'Attempting delete... ', 'BookOrder');
+END;//
+DELIMITER ;
+
+-- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS 

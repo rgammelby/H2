@@ -3,20 +3,23 @@ DROP DATABASE IF EXISTS OnlineBookStore;
 CREATE DATABASE IF NOT EXISTS OnlineBookStore;
 
 -- Creates a database admin and grants all permissions
--- CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
-GRANT ALL PRIVILEGES ON OnlineBookStore.* TO 'admin'@'localhost' WITH GRANT OPTION;
+DROP USER IF EXISTS 'admin'@'localhost';
+FLUSH PRIVILEGES;
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT OPTION;
 
 -- Ensures the rest of the script is applied to the correct database
 USE OnlineBookStore;
 
 -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES 
 
--- Starts creating tables with no outside references
 CREATE TABLE Author (
 	author_id SMALLINT PRIMARY KEY AUTO_INCREMENT,  -- Using smallints to conserve space, as I don't figure I'll have very many entries, otherwise int instead of smallint
-    name VARCHAR(256) NOT NULL  -- Using varchar to accept any character in name
+    first_name VARCHAR(256) NOT NULL,  -- Using varchar to accept any character in name
+    last_name VARCHAR(256) NOT NULL
 );
-CREATE INDEX author_index ON Author(name) USING BTREE;
+CREATE INDEX author_index ON Author(last_name) USING BTREE;
+CREATE INDEX author_first_name_index ON Author(first_name) USING BTREE;
 
 CREATE TABLE Genre (
 	genre_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
@@ -24,6 +27,7 @@ CREATE TABLE Genre (
 );
 CREATE INDEX genre_index ON Genre(name) USING BTREE;
 
+-- Book with external references to Author and Genre (each book has one)
 CREATE TABLE Book (
 	book_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(256) NOT NULL,
@@ -34,7 +38,9 @@ CREATE TABLE Book (
     FOREIGN KEY (genre) REFERENCES Genre(genre_id)
 );
 CREATE INDEX book_index ON Book(title) USING BTREE;
+CREATE INDEX price_index ON Book(price) USING BTREE;
     
+-- Table for imported city & postcode information
 CREATE TABLE Address(
 	address_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
     postcode VARCHAR(4) NOT NULL,
@@ -43,6 +49,7 @@ CREATE TABLE Address(
 CREATE INDEX postcode_index ON Address(postcode) USING BTREE;
 CREATE INDEX city_index ON Address(city) USING BTREE;
     
+-- Customer with address reference
 CREATE TABLE Customer (
 	customer_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(256) NOT NULL,
@@ -52,8 +59,11 @@ CREATE TABLE Customer (
     FOREIGN KEY (address) REFERENCES Address(address_id)
 );
 CREATE INDEX customer_index ON Customer(name) USING BTREE;
+CREATE INDEX email_index ON Customer(email) USING BTREE;
+CREATE INDEX address_index ON Customer(road_and_number) USING BTREE;
     
 -- Name 'Order' unavailable
+-- Each order (purchase) belongs to a user
 CREATE TABLE Purchase (
 	order_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
     order_number INT NOT NULL,
@@ -62,7 +72,8 @@ CREATE TABLE Purchase (
 );
 CREATE INDEX order_index ON Purchase(order_number) USING BTREE;
 
-	-- Table for n -> n relation (Book & Order)
+-- Table for n -> n relation (Book & Order)
+-- several BookOrder items exist for each order number (user order); these are all the books belonging to a single order
 CREATE TABLE BookOrder (
 	order_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
     order_number SMALLINT NOT NULL,
@@ -72,7 +83,8 @@ CREATE TABLE BookOrder (
 );
 CREATE INDEX bookorder_index ON BookOrder(order_number) USING BTREE;
     
-    -- Log table
+-- Log table
+-- Later triggers log attempts and successful attempts at insertions, updates & deletes
 CREATE TABLE bogreden_log (
 	log_id INT PRIMARY KEY AUTO_INCREMENT,
     change_type VARCHAR(30),
@@ -84,19 +96,22 @@ CREATE INDEX change_type_index ON bogreden_log(change_type) USING BTREE;
 CREATE INDEX table_name_index ON bogreden_log(table_name) USING BTREE;
 CREATE INDEX log_time_index ON bogreden_log(log_time) USING BTREE;
 
+-- Imports data from csv file. Must be located correctly in the given path for it to run
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/postnumre.csv'
 INTO TABLE Address
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES (postcode, city);
     
-SHOW TABLES;
+-- SHOW TABLES;  -- confirm successful table creation
 
 -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES -- TABLES 
 
 -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS -- TRIGGERS 
 
 -- AUTHOR TRIGGERS
+	-- AFTER TRIGGERS
+    -- Logs successful change attempts
 DELIMITER //
 CREATE TRIGGER author_create_trigger
 AFTER INSERT
@@ -128,7 +143,7 @@ BEGIN
 END;//
 
 -- BEFORE TRIGGERS
-
+	-- Logs attempts before success or failure
 CREATE TRIGGER author_before_create_trigger
 BEFORE INSERT
 ON Author
@@ -541,191 +556,6 @@ DELIMITER ;
 
 -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES
 
--- Fetches logs made in a span of dates 
-DROP PROCEDURE IF EXISTS GetLogsBetweenDates;
-
-DELIMITER //
-CREATE PROCEDURE GetLogsBetweenDates (
-    IN firstDay INT, 
-    IN firstMonth INT, 
-    IN firstYear VARCHAR(4), 
-    IN lastDay INT, 
-    IN lastMonth INT, 
-    IN lastYear VARCHAR(4)
-)
-BEGIN
-    IF firstYear = '' THEN SET firstYear = '2024'; END IF;
-    IF lastYear = '' THEN SET lastYear = '2024'; END IF;
-    SELECT log_id, change_type, table_name, id_key, log_time 
-    FROM bogreden_log
-    WHERE log_time BETWEEN CONCAT(firstYear, '-', firstMonth, '-', firstDay)
-    AND CONCAT(lastYear, '-', lastMonth, '-', lastDay)
-    ORDER BY log_time;
-END //
-DELIMITER ;
-
--- CALL GetLogsBetweenDates('23', '04', '', '27', '04', '');
-
--- Get books by author
-DROP PROCEDURE IF EXISTS GetBooksByAuthor;
-
-DELIMITER //
-CREATE PROCEDURE GetBooksByAuthor (IN authorName VARCHAR(256))
-BEGIN 
-	SELECT DISTINCT b.title AS Title, b.price AS 'Price (kr.)', a.name AS Author 
-    FROM Book b
-    JOIN Author a 
-    ON b.author = a.author_id
-    WHERE b.author IN (SELECT author_id FROM Author WHERE name LIKE CONCAT('%', authorName, '%') ORDER BY name ASC);
-END //
-DELIMITER ;
-
--- CALL GetBooksByAuthor('george');
-
--- Get author of book
-DROP PROCEDURE IF EXISTS GetAuthorByBookTitle;
-
-DELIMITER //
-CREATE PROCEDURE GetAuthorByBookTitle (IN bookTitle VARCHAR(256)) 
-BEGIN
-	SELECT b.title AS Title, a.name AS Author
-    FROM Author a
-    JOIN Book b ON a.author_id = b.author
-    WHERE b.title LIKE CONCAT('%', bookTitle, '%');
-END //
-DELIMITER ;
-
--- CALL GetAuthorByBookTitle('rings');
-
--- Get customer info by customer
-DROP PROCEDURE IF EXISTS GetCustomerInfoByCustomerName;
-
-DELIMITER //
-CREATE PROCEDURE GetCustomerInfoByCustomerName (IN customerName VARCHAR(256))
-BEGIN
-	SELECT c.name AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Zip Code', a.city AS City
-    FROM Customer c
-    JOIN Address a ON c.address = a.address_id
-    WHERE c.name LIKE CONCAT('%', customerName, '%');
-END //
-DELIMITER ;
-
--- CALL GetCustomerInfoByCustomerName('G');
-
--- Get orders by customer
-DROP PROCEDURE IF EXISTS GetOrdersByCustomer;
-
-DELIMITER //
-CREATE PROCEDURE GetOrdersByCustomer (IN customerName VARCHAR(256))
-BEGIN
-	SELECT p.order_number, b.title, c.name FROM BookOrder o
-    JOIN Purchase p ON o.order_number = p.order_id
-    JOIN Customer c ON p.customer = c.customer_id
-    JOIN Book b ON o.book = b.book_id
-    WHERE c.name LIKE CONCAT('%', customerName, '%');
-END //
-DELIMITER ;
-
--- CALL GetOrdersByCustomer('Sascha');
-
--- Get book info by book
-DROP PROCEDURE IF EXISTS GetBookInfoByBookTitle;
-
-DELIMITER //
-CREATE PROCEDURE GetBookInfoByBookTitle (IN bookTitle VARCHAR(256))
-BEGIN
-	SELECT b.title AS Title, a.name AS Author, b.price AS 'Price (kr.)', g.name AS Genre
-    FROM Book b
-    JOIN Author a ON b.author = a.author_id
-    JOIN Genre g ON b.genre = g.genre_id
-    WHERE title LIKE CONCAT('%', bookTitle, '%');
-END //
-DELIMITER ;
-
--- CALL GetBookInfoByBookTitle('the');
-/*
-delimiter //
-create procedure
-begin
-	
-end //
-delimiter;
-*/
-DROP PROCEDURE IF EXISTS CreateNewUser;
-
-DELIMITER //
-CREATE PROCEDURE CreateNewUser (
-    IN customerName VARCHAR(256), 
-    IN customerMail VARCHAR(256), 
-    IN customerAddress VARCHAR(256), 
-    IN addressIdFromPostcode SMALLINT
-)
-BEGIN
-	INSERT INTO Customer
-    VALUES (DEFAULT, customerName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
-END //
-DELIMITER ;
-
--- CALL CreateNewUser('Peter Jensen', 'pj@mail.dk', 'Duevænget 12', 7700);
-
-DROP PROCEDURE IF EXISTS CreateNewAuthor;
-
-DELIMITER //
-CREATE PROCEDURE CreateNewAuthor (IN authorName VARCHAR(256))
-BEGIN
-	INSERT INTO Author
-    VALUES (DEFAULT, authorName);
-END //
-DELIMITER ;
-
-DROP PROCEDURE IF EXISTS CreateNewGenre;
-
-DELIMITER //
-CREATE PROCEDURE CreateNewGenre (IN genreName VARCHAR(50))
-BEGIN
-	INSERT INTO Genre
-    VALUES (DEFAULT, genreName);
-END //
-DELIMITER ;
-
-DROP PROCEDURE IF EXISTS CreateNewBook;
-
-DELIMITER //
-CREATE PROCEDURE CreateNewBook (
-    IN bookTitle VARCHAR(256), 
-    IN bookAuthor VARCHAR(256), 
-    IN bookPrice SMALLINT, 
-    IN bookGenre VARCHAR(50)
-)
-BEGIN
-	-- Declare author and genre ids to ensure the book gets created even if the author or genre is not currently in the database
-	DECLARE authorId SMALLINT;
-    DECLARE genreId SMALLINT;
-    
-    -- Checks validity of author and genre in procedure call
-    SELECT author_id INTO authorId FROM Author WHERE name LIKE CONCAT('%', bookAuthor, '%');
-    SELECT genre_id INTO genreId FROM Genre WHERE name LIKE CONCAT('%', bookGenre, '%');
-    
-    -- If author or genre from procedure call does not exist, create record for that author or genre
-    IF authorId IS NULL THEN
-		CALL CreateNewAuthor(bookAuthor);
-        SELECT LAST_INSERT_ID() INTO authorId;
-    END IF;
-    
-    IF genreId IS NULL THEN
-		CALL CreateNewGenre(bookGenre);
-        SELECT LAST_INSERT_ID() INTO genreId;
-    END IF;
-    
-	INSERT INTO Book
-    VALUES (DEFAULT, bookTitle, authorId, bookPrice, genreId);
-END //
-DELIMITER ;
--- select * from book;
-CALL CreateNewBook('The Hobbit', 'J. R. R. Tolkien', 300, 'Fantasy');
--- CALL CreateNewBook('A Game of Thrones', 'George R. R. Martin', 100, 'Fantasy');
--- CALL CreateNewBook('A Clash of Kings', 'George R. R. Martin', 120, 'Fantasy');
-
 -- Generate a random number
 DROP PROCEDURE IF EXISTS GenerateOrderNumber;
 
@@ -757,12 +587,187 @@ BEGIN
 END //
 DELIMITER ;
 
--- CALL CreateNewOrder('Sascha');
+-- Fetches logs made in a span of dates 
+DROP PROCEDURE IF EXISTS GetLogsBetweenDates;
 
--- SHOW PROCEDURE STATUS WHERE name = 'CreateNewOrder';
--- CALL CreateNewOrder('Sascha');
+DELIMITER //
+CREATE PROCEDURE GetLogsBetweenDates (
+    IN firstDay INT, 
+    IN firstMonth INT, 
+    IN firstYear VARCHAR(4), 
+    IN lastDay INT, 
+    IN lastMonth INT, 
+    IN lastYear VARCHAR(4)
+)
 
--- SELECT * FROM Purchase;
+BEGIN
+    IF firstYear = '' THEN SET firstYear = YEAR(CURDATE()); END IF;
+    IF lastYear = '' THEN SET lastYear = YEAR(CURDATE()); END IF;
+    SELECT log_id, change_type, table_name, id_key, log_time 
+    FROM bogreden_log
+    WHERE log_time BETWEEN CONCAT(firstYear, '-', firstMonth, '-', firstDay)
+    AND CONCAT(lastYear, '-', lastMonth, '-', lastDay)
+    ORDER BY log_time;
+END //
+DELIMITER ;
+
+-- Get books by author
+DROP PROCEDURE IF EXISTS GetBooksByAuthor;
+
+DELIMITER //
+CREATE PROCEDURE GetBooksByAuthor (IN authorName VARCHAR(256))
+BEGIN 
+	SELECT DISTINCT b.title AS Title, b.price AS 'Price (kr.)', concat(a.first_name, a.last_name) AS Author 
+    FROM Book b
+    JOIN Author a 
+    ON b.author = a.author_id
+    WHERE b.author IN (SELECT author_id FROM Author WHERE first_name LIKE CONCAT('%', authorName, '%') OR last_name LIKE CONCAT('%', authorName, '%') ORDER BY last_name ASC);
+END //
+DELIMITER ;
+
+-- Get author of book
+DROP PROCEDURE IF EXISTS GetAuthorByBookTitle;
+
+DELIMITER //
+CREATE PROCEDURE GetAuthorByBookTitle (IN bookTitle VARCHAR(256)) 
+BEGIN
+	SELECT b.title AS Title, concat(a.first_name, a.last_name) AS Author
+    FROM Author a
+    JOIN Book b ON a.author_id = b.author
+    WHERE b.title LIKE CONCAT('%', bookTitle, '%');
+END //
+DELIMITER ;
+
+-- Get customer info by customer
+DROP PROCEDURE IF EXISTS GetCustomerInfoByCustomerName;
+
+DELIMITER //
+CREATE PROCEDURE GetCustomerInfoByCustomerName (IN customerName VARCHAR(256))
+BEGIN
+	SELECT c.name AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Zip Code', a.city AS City
+    FROM Customer c
+    JOIN Address a ON c.address = a.address_id
+    WHERE c.name LIKE CONCAT('%', customerName, '%');
+END //
+DELIMITER ;
+
+-- Get orders by customer
+DROP PROCEDURE IF EXISTS GetOrdersByCustomer;
+
+DELIMITER //
+CREATE PROCEDURE GetOrdersByCustomer (IN customerName VARCHAR(256))
+BEGIN
+	SELECT p.order_number, b.title, c.name FROM BookOrder o
+    JOIN Purchase p ON o.order_number = p.order_id
+    JOIN Customer c ON p.customer = c.customer_id
+    JOIN Book b ON o.book = b.book_id
+    WHERE c.name LIKE CONCAT('%', customerName, '%');
+END //
+DELIMITER ;
+
+-- Get book info by book
+DROP PROCEDURE IF EXISTS GetBookInfoByBookTitle;
+
+DELIMITER //
+CREATE PROCEDURE GetBookInfoByBookTitle (IN bookTitle VARCHAR(256))
+BEGIN
+	SELECT b.title AS Title, concat(a.first_name, a.last_name) AS Author, b.price AS 'Price (kr.)', g.name AS Genre
+    FROM Book b
+    JOIN Author a ON b.author = a.author_id
+    JOIN Genre g ON b.genre = g.genre_id
+    WHERE title LIKE CONCAT('%', bookTitle, '%');
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateNewUser;
+
+DELIMITER //
+CREATE PROCEDURE CreateNewUser (
+    IN customerName VARCHAR(256), 
+    IN customerMail VARCHAR(256), 
+    IN customerAddress VARCHAR(256), 
+    IN addressIdFromPostcode SMALLINT
+)
+BEGIN
+	INSERT INTO Customer
+    VALUES (DEFAULT, customerName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateNewAuthor;
+
+DELIMITER //
+CREATE PROCEDURE CreateNewAuthor (IN authorName VARCHAR(256), IN authorLastName varchar(256))
+BEGIN
+	DECLARE existingAuthor INT;
+	SELECT author_id FROM Author WHERE first_name LIKE CONCAT('%', authorName, '%') AND last_name LIKE CONCAT('%', authorLastName, '%') INTO existingAuthor;
+    
+    IF existingAuthor IS NULL THEN
+		INSERT INTO Author
+		VALUES (DEFAULT, CONCAT(authorName, ' '), authorLastName);
+	
+    ELSE SELECT "This author already exists in the database. " AS Error;
+    END IF;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateNewGenre;
+
+DELIMITER //
+CREATE PROCEDURE CreateNewGenre (IN genreName VARCHAR(50))
+BEGIN
+	DECLARE existingGenre INT;
+    SELECT genre_id FROM Genre WHERE name = genreName INTO existingGenre;
+    IF existingGenre IS NULL THEN
+		INSERT INTO Genre
+		VALUES (DEFAULT, genreName);
+        
+	ELSE SELECT "This genre already exists in the database. " AS Error;
+    END IF;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateNewBook;
+
+DELIMITER //
+CREATE PROCEDURE CreateNewBook (
+    IN bookTitle VARCHAR(256), 
+    IN bookAuthor VARCHAR(256), 
+    IN bookAuthorLastName VARCHAR(256),
+    IN bookPrice SMALLINT, 
+    IN bookGenre VARCHAR(50)
+)
+BEGIN
+	-- Declare author and genre ids to ensure the book gets created even if the author or genre is not currently in the database
+	DECLARE authorId SMALLINT;
+    DECLARE genreId SMALLINT;
+    DECLARE existingBookTitle SMALLINT;
+    
+    -- Checks validity of author and genre in procedure call
+    SELECT author_id INTO authorId FROM Author WHERE first_name LIKE CONCAT('%', bookAuthor, '%') OR last_name LIKE CONCAT('%', bookAuthorLastName, '%');
+    SELECT genre_id INTO genreId FROM Genre WHERE name LIKE CONCAT('%', bookGenre, '%');
+    SELECT book_id INTO existingBookTitle FROM Book WHERE title = bookTitle;
+    
+    IF existingBookTitle IS NULL THEN
+		-- If author or genre from procedure call does not exist, create record for that author or genre
+		IF authorId IS NULL THEN
+			CALL CreateNewAuthor(bookAuthor, bookAuthorLastName);
+			SELECT LAST_INSERT_ID() INTO authorId;
+		END IF;
+    
+		IF genreId IS NULL THEN
+			CALL CreateNewGenre(bookGenre);
+			SELECT LAST_INSERT_ID() INTO genreId;
+		END IF;
+        
+	INSERT INTO Book
+    VALUES (DEFAULT, bookTitle, authorId, bookPrice, genreId);
+    
+    ELSE SELECT "This book already exists in the database. " AS Error;
+    END IF;
+    
+END //
+DELIMITER ;
 
 -- Assigns a product to a specific order number using a pre-generated order number from Purchase and the Book(book_id) - call for each book purchased
 DROP PROCEDURE IF EXISTS CreateNewBookOrder;
@@ -775,24 +780,21 @@ BEGIN
 END //
 DELIMITER ; 
 
--- SELECT * FROM BookOrder;
-
 -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES
-
 
 -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA 
 
 -- Inserting dummy data into the Author table
-INSERT INTO Author (name)
+INSERT INTO Author (first_name, last_name)
 VALUES 
-    ('J. R. R. Tolkien'),
-	('William Shakespeare'),
-	('George Orwell'),
-	('Leo Tolstoy'),
-	('C. S. Lewis'),
-	('Lewis Carroll'),
-	('Stephen King'),
-	('Stephanie Meyer');
+    ('J. R. R.', 'Tolkien'),
+	('William', 'Shakespeare'),
+	('George', 'Orwell'),
+	('Leo', 'Tolstoy'),
+	('C. S.', 'Lewis'),
+	('Lewis', 'Carroll'),
+	('Stephen', 'King'),
+	('Stephanie', 'Meyer');
     
 -- Inserting dummy data into the Genre table
 INSERT INTO Genre (name)
@@ -860,7 +862,6 @@ VALUES
     (@order7, 7),
     (@order8, 8);
 
-	select * from purchase;
 -- Inserting dummy data into the BookOrder table
 INSERT INTO BookOrder (order_number, book)
 VALUES 
@@ -886,3 +887,37 @@ VALUES
 	(8, 4);
 
 -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA 
+
+-- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS 
+-- FOR TESTING.
+
+/*
+CALL GetLogsBetweenDates('23', '04', '', '27', '04', '');
+
+CALL CreateNewGenre('Romance');
+
+CALL CreateNewAuthor('Peter', 'Jensen');
+
+CALL GetBooksByAuthor('george');
+
+CALL GetAuthorByBookTitle('rings');
+
+CALL GetCustomerInfoByCustomerName('G');
+
+CALL GetOrdersByCustomer('Sascha');
+
+CALL GetBookInfoByBookTitle('the');
+
+CALL CreateNewUser('Peter Jensen', 'pj@mail.dk', 'Duevænget 12', 7700);
+
+CALL CreateNewBook('The Hobbit', 'J. R. R.', 'Tolkien', 300, 'Fantasy');
+
+CALL CreateNewBook('A Game of Thrones', 'George R. R.', 'Martin', 100, 'Fantasy');
+
+select * from book;
+
+CALL CreateNewBook('A Clash of Kings', 'George R. R.', 'Martin', 120, 'Fantasy');
+
+CALL CreateNewOrder('Sascha');
+
+-- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS -- PROCEDURE CALLS 

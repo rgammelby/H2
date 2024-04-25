@@ -1,96 +1,229 @@
 -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES
 
--- fetches logs made in a span of dates 
-drop procedure if exists GetLogsBetweenDates;
+USE OnlineBookStore;
 
-delimiter //
-create procedure GetLogsBetweenDates (IN firstDay INT, IN firstMonth INT, IN firstYear varchar(4), IN lastDay INT, IN lastMonth INT, IN lastYear varchar(4))
-begin
-    if firstYear = '' then set firstYear = '2024'; end if;
-    if lastYear = '' then set lastYear = '2024'; end if;
-    select log_id, change_type, table_name, id_key, log_time 
-    from bogreden_log
-    where log_time between concat(firstYear, '-', firstMonth, '-', firstDay)
-    and concat(lastYear, '-', lastMonth, '-', lastDay)
-    order by log_time;
-end //
-delimiter ;
+-- Generate a random number
+DROP PROCEDURE IF EXISTS GenerateOrderNumber;
 
-call GetLogsBetweenDates('23', '04', '', '27', '04', '');
+DELIMITER //
+CREATE PROCEDURE GenerateOrderNumber(OUT orderNumber INT)
+BEGIN
+	DECLARE randomNumber INT;
 
--- get books by author
-drop procedure if exists GetBooksByAuthor;
+	REPEAT
+        SET randomNumber = (100000 + RAND() * 900000);
+    UNTIL NOT EXISTS (SELECT 1 FROM Purchase WHERE order_number = randomNumber) END REPEAT;
+    
+    SET orderNumber = randomNumber;
+END//
+DELIMITER ;
 
-delimiter //
-create procedure GetBooksByAuthor (in authorName varchar(256))
-begin 
-	select title as Title, price as 'Price (kr.)', a.name as Author 
-    from Book b
-    join Author a 
-    on b.author = a.author_id
-    where b.author = (select author_id from Author where name = authorName);
-end //
-delimiter ;
+-- Creates a new order and generates an order number
+DROP PROCEDURE IF EXISTS CreateNewOrder;
 
-call GetBooksByAuthor('Hejsa');
+DELIMITER //
+CREATE PROCEDURE CreateNewOrder (IN customerName VARCHAR(256))
+BEGIN
+	DECLARE orderNumber INT;
+	CALL GenerateOrderNumber(orderNumber);
+    SELECT orderNumber;
+    INSERT INTO Purchase
+    VALUES (DEFAULT, orderNumber, (SELECT customer_id FROM Customer WHERE name LIKE CONCAT('%', customerName, '%')));
+    
+END //
+DELIMITER ;
 
--- get author of book
-drop procedure if exists GetAuthorByBookTitle;
+-- Fetches logs made in a span of dates 
+DROP PROCEDURE IF EXISTS GetLogsBetweenDates;
 
-delimiter //
-create procedure GetAuthorByBookTitle (in bookTitle varchar(256)) 
-begin
-	select b.title as Title, a.name as Author
-    from Author a
-    join Book b on a.author_id = b.author
-    where b.title = bookTitle;
-end //
-delimiter ;
+DELIMITER //
+CREATE PROCEDURE GetLogsBetweenDates (
+    IN firstDay INT, 
+    IN firstMonth INT, 
+    IN firstYear VARCHAR(4), 
+    IN lastDay INT, 
+    IN lastMonth INT, 
+    IN lastYear VARCHAR(4)
+)
 
-call GetAuthorByBookTitle('Hej Bog');
+BEGIN
+    IF firstYear = '' THEN SET firstYear = YEAR(CURDATE()); END IF;
+    IF lastYear = '' THEN SET lastYear = YEAR(CURDATE()); END IF;
+    SELECT log_id, change_type, table_name, id_key, log_time 
+    FROM bogreden_log
+    WHERE log_time BETWEEN CONCAT(firstYear, '-', firstMonth, '-', firstDay)
+    AND CONCAT(lastYear, '-', lastMonth, '-', lastDay)
+    ORDER BY log_time;
+END //
+DELIMITER ;
 
--- get customer info by customer
-drop procedure if exists GetCustomerInfoByCustomerName;
+-- Get books by author
+DROP PROCEDURE IF EXISTS GetBooksByAuthor;
 
-delimiter //
-create procedure GetCustomerInfoByCustomerName (in customerName varchar(256))
-begin
-	select c.name as Name, c.email as 'E-mail', c.road_and_number as Address, a.postcode as 'Zip Code', a.city as City
-    from Customer c
-    join Address a on c.address = a.address_id
-    where c.name = customerName;
-end //
-delimiter ;
+DELIMITER //
+CREATE PROCEDURE GetBooksByAuthor (IN authorName VARCHAR(256))
+BEGIN 
+	SELECT DISTINCT b.title AS Title, b.price AS 'Price (kr.)', concat(a.first_name, a.last_name) AS Author 
+    FROM Book b
+    JOIN Author a 
+    ON b.author = a.author_id
+    WHERE b.author IN (SELECT author_id FROM Author WHERE first_name LIKE CONCAT('%', authorName, '%') OR last_name LIKE CONCAT('%', authorName, '%') ORDER BY last_name ASC);
+END //
+DELIMITER ;
 
-call GetCustomerInfoByCustomerName('Sascha');
+-- Get author of book
+DROP PROCEDURE IF EXISTS GetAuthorByBookTitle;
 
--- get orders by customer
-drop procedure if exists GetOrdersByCustomer;
+DELIMITER //
+CREATE PROCEDURE GetAuthorByBookTitle (IN bookTitle VARCHAR(256)) 
+BEGIN
+	SELECT b.title AS Title, concat(a.first_name, a.last_name) AS Author
+    FROM Author a
+    JOIN Book b ON a.author_id = b.author
+    WHERE b.title LIKE CONCAT('%', bookTitle, '%');
+END //
+DELIMITER ;
 
-delimiter //
-create procedure GetOrdersByCustomer (in customerName varchar(256))
-begin
-	select o.order_id as 'Order ID', o.order_number as 'Order No.', c.name 
-    from Purchase o
-    join Customer c on o.customer = c.customer_id
-    where o.name = customerName;
-end //
-delimiter ;
+-- Get customer info by customer
+DROP PROCEDURE IF EXISTS GetCustomerInfoByCustomerName;
 
--- get book info by book
-drop procedure if exists GetBookInfoByBookTitle;
+DELIMITER //
+CREATE PROCEDURE GetCustomerInfoByCustomerName (IN customerName VARCHAR(256))
+BEGIN
+	SELECT c.name AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Zip Code', a.city AS City
+    FROM Customer c
+    JOIN Address a ON c.address = a.address_id
+    WHERE c.name LIKE CONCAT('%', customerName, '%');
+END //
+DELIMITER ;
 
-delimiter //
-create procedure GetBookInfoByBookTitle (in bookTitle varchar(256))
-begin
-	select b.title as Title, a.name as Author, b.price as 'Price (kr.)', g.name as Genre
-    from Book b
-    join Author a on b.author = a.author_id
-    join Genre g on b.genre = g.genre_id
-    where title = bookTitle;
-end //
-delimiter ;
+-- Get orders by customer
+DROP PROCEDURE IF EXISTS GetOrdersByCustomer;
 
-call GetBookInfoByBookTitle('Hej Bog');
+DELIMITER //
+CREATE PROCEDURE GetOrdersByCustomer (IN customerName VARCHAR(256))
+BEGIN
+	SELECT p.order_number, b.title, c.name FROM BookOrder o
+    JOIN Purchase p ON o.order_number = p.order_id
+    JOIN Customer c ON p.customer = c.customer_id
+    JOIN Book b ON o.book = b.book_id
+    WHERE c.name LIKE CONCAT('%', customerName, '%');
+END //
+DELIMITER ;
 
--- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES
+-- Get book info by book
+DROP PROCEDURE IF EXISTS GetBookInfoByBookTitle;
+
+DELIMITER //
+CREATE PROCEDURE GetBookInfoByBookTitle (IN bookTitle VARCHAR(256))
+BEGIN
+	SELECT b.title AS Title, concat(a.first_name, a.last_name) AS Author, b.price AS 'Price (kr.)', g.name AS Genre
+    FROM Book b
+    JOIN Author a ON b.author = a.author_id
+    JOIN Genre g ON b.genre = g.genre_id
+    WHERE title LIKE CONCAT('%', bookTitle, '%');
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateNewUser;
+
+DELIMITER //
+CREATE PROCEDURE CreateNewUser (
+    IN customerName VARCHAR(256), 
+    IN customerMail VARCHAR(256), 
+    IN customerAddress VARCHAR(256), 
+    IN addressIdFromPostcode SMALLINT
+)
+BEGIN
+	INSERT INTO Customer
+    VALUES (DEFAULT, customerName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateNewAuthor;
+
+DELIMITER //
+CREATE PROCEDURE CreateNewAuthor (IN authorName VARCHAR(256), IN authorLastName varchar(256))
+BEGIN
+	DECLARE existingAuthor INT;
+	SELECT author_id FROM Author WHERE first_name LIKE CONCAT('%', authorName, '%') AND last_name LIKE CONCAT('%', authorLastName, '%') INTO existingAuthor;
+    
+    IF existingAuthor IS NULL THEN
+		INSERT INTO Author
+		VALUES (DEFAULT, CONCAT(authorName, ' '), authorLastName);
+	
+    ELSE SELECT "This author already exists in the database. " AS Error;
+    END IF;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateNewGenre;
+
+DELIMITER //
+CREATE PROCEDURE CreateNewGenre (IN genreName VARCHAR(50))
+BEGIN
+	DECLARE existingGenre INT;
+    SELECT genre_id FROM Genre WHERE name = genreName INTO existingGenre;
+    IF existingGenre IS NULL THEN
+		INSERT INTO Genre
+		VALUES (DEFAULT, genreName);
+        
+	ELSE SELECT "This genre already exists in the database. " AS Error;
+    END IF;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS CreateNewBook;
+
+DELIMITER //
+CREATE PROCEDURE CreateNewBook (
+    IN bookTitle VARCHAR(256), 
+    IN bookAuthor VARCHAR(256), 
+    IN bookAuthorLastName VARCHAR(256),
+    IN bookPrice SMALLINT, 
+    IN bookGenre VARCHAR(50)
+)
+BEGIN
+	-- Declare author and genre ids to ensure the book gets created even if the author or genre is not currently in the database
+	DECLARE authorId SMALLINT;
+    DECLARE genreId SMALLINT;
+    DECLARE existingBookTitle SMALLINT;
+    
+    -- Checks validity of author and genre in procedure call
+    SELECT author_id INTO authorId FROM Author WHERE first_name LIKE CONCAT('%', bookAuthor, '%') OR last_name LIKE CONCAT('%', bookAuthorLastName, '%');
+    SELECT genre_id INTO genreId FROM Genre WHERE name LIKE CONCAT('%', bookGenre, '%');
+    SELECT book_id INTO existingBookTitle FROM Book WHERE title = bookTitle;
+    
+    IF existingBookTitle IS NULL THEN
+		-- If author or genre from procedure call does not exist, create record for that author or genre
+		IF authorId IS NULL THEN
+			CALL CreateNewAuthor(bookAuthor, bookAuthorLastName);
+			SELECT LAST_INSERT_ID() INTO authorId;
+		END IF;
+    
+		IF genreId IS NULL THEN
+			CALL CreateNewGenre(bookGenre);
+			SELECT LAST_INSERT_ID() INTO genreId;
+		END IF;
+        
+	INSERT INTO Book
+    VALUES (DEFAULT, bookTitle, authorId, bookPrice, genreId);
+    
+    ELSE SELECT "This book already exists in the database. " AS Error;
+    END IF;
+    
+END //
+DELIMITER ;
+
+-- Assigns a product to a specific order number using a pre-generated order number from Purchase and the Book(book_id) - call for each book purchased
+DROP PROCEDURE IF EXISTS CreateNewBookOrder;
+
+DELIMITER //
+CREATE PROCEDURE CreateNewBookOrder (IN orderNumber SMALLINT, IN orderedBook SMALLINT)
+BEGIN
+	INSERT INTO BookOrder
+    VALUES (DEFAULT, orderNumber, (SELECT book_id FROM Book WHERE title LIKE CONCAT('%', orderedBook, '%')));
+END //
+DELIMITER ; 
+
+-- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES
