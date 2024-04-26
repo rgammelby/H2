@@ -39,16 +39,16 @@ VALUES
     ('Twilight', 8, 120, 1);
     
 -- default, name, mail, address, address_id
-INSERT INTO Customer (first_name, last_name, email, road_and_number, address)
+INSERT INTO Customer (username, password, first_name, last_name, email, road_and_number, address)
 VALUES 
-	('Sascha', 'Gammelby', 's@mail.dk', 'Søborg Hovedgade 9', (SELECT address_id FROM address WHERE postcode = '2870')),
-	('Christine', 'Grindsted', 'c@mail.dk', 'Toftevej 20', (SELECT address_id FROM address WHERE postcode = '7700')),
-	('Bo', 'Bjørnsson', 'bb@mail.dk', 'Vinkelvej 1', (SELECT address_id FROM address WHERE postcode = '4220')),
-    ('Benjamin', 'Lohse', 'b@mail.dk', 'Jagtvej 139', (SELECT address_id FROM address WHERE postcode = '2200')),
-    ('Henriette', 'Bjerregaard', 'h@mail.dk', 'Ved Klostret 10', (SELECT address_id FROM address WHERE postcode = '2100')),
-    ('Markus', 'Åland', 'm@mail.dk', 'Elmegårdsvænget 19', (SELECT address_id FROM address WHERE postcode = '8210')),
-    ('Mette', 'Måløv', 'mm@mail.dk', 'Asfaltvej 9', (SELECT address_id FROM address WHERE postcode = '9000')),
-    ('Anne-Marie', 'Bisse', 'am@mail.dk', 'Nybro Vænge', (SELECT address_id FROM address WHERE postcode = '2800'));
+	('sgam', SHA2('admin', 256), 'Sascha ', 'Gammelby', 's@mail.dk', 'Søborg Hovedgade 9', (SELECT address_id FROM address WHERE postcode = '2870')),
+	('cgri', SHA2('1234', 256), 'Christine ', 'Grindsted', 'c@mail.dk', 'Toftevej 20', (SELECT address_id FROM address WHERE postcode = '7700')),
+	('bbjo', SHA2('aosdf', 256), 'Bo ', 'Bjørnsson', 'bb@mail.dk', 'Vinkelvej 1', (SELECT address_id FROM address WHERE postcode = '4220')),
+    ('bloh', SHA2('osn8d', 256), 'Benjamin ', 'Lohse', 'b@mail.dk', 'Jagtvej 139', (SELECT address_id FROM address WHERE postcode = '2200')),
+    ('hbje', SHA2('minkatersød', 256), 'Henriette ', 'Bjerregaard', 'h@mail.dk', 'Ved Klostret 10', (SELECT address_id FROM address WHERE postcode = '2100')),
+    ('maal', SHA2('aarhusw', 256), 'Markus ', 'Åland', 'm@mail.dk', 'Elmegårdsvænget 19', (SELECT address_id FROM address WHERE postcode = '8210')),
+    ('mmaa', SHA2('øvherlev', 256), 'Mette ', 'Måløv', 'mm@mail.dk', 'Asfaltvej 9', (SELECT address_id FROM address WHERE postcode = '9000')),
+    ('ambi', SHA2('birger', 256), 'Anne-Marie ', 'Bisse', 'am@mail.dk', 'Nybro Vænge', (SELECT address_id FROM address WHERE postcode = '2800'));
 
 -- Inserting dummy data into the Purchase table
 SET @order1 = 0;
@@ -103,5 +103,5 @@ VALUES
 	(8, 8),
 	(8, 3),
 	(8, 4);
-
+    
 -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA -- DUMMY DATA 

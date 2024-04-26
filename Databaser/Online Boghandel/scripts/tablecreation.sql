@@ -41,6 +41,8 @@ CREATE INDEX city_index ON Address(city) USING BTREE;
 -- Customer with address reference
 CREATE TABLE Customer (
 	customer_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(64) UNIQUE NOT NULL,
+	password VARCHAR(64) NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
@@ -52,6 +54,8 @@ CREATE INDEX customer_index ON Customer(last_name) USING BTREE;
 CREATE INDEX customer_name_index ON Customer(first_name) USING BTREE;
 CREATE INDEX email_index ON Customer(email) USING BTREE;
 CREATE INDEX address_index ON Customer(road_and_number) USING BTREE;
+CREATE INDEX username_index ON Customer(username) USING BTREE;
+CREATE INDEX passwd_index ON Customer(password) USING BTREE;
     
 -- Name 'Order' unavailable
 -- Each order (purchase) belongs to a user

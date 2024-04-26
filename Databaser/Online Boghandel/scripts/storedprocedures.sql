@@ -22,13 +22,13 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS CreateNewOrder;
 
 DELIMITER //
-CREATE PROCEDURE CreateNewOrder (IN customerName VARCHAR(50))
+CREATE PROCEDURE CreateNewOrder (IN customerUsername VARCHAR(64))
 BEGIN
 	DECLARE orderNumber INT;
 	CALL GenerateOrderNumber(orderNumber);
     SELECT orderNumber;
     INSERT INTO Purchase
-    VALUES (DEFAULT, orderNumber, (SELECT customer_id FROM Customer WHERE name LIKE CONCAT('%', customerName, '%')));
+    VALUES (DEFAULT, orderNumber, (SELECT customer_id FROM Customer WHERE username LIKE CONCAT('%', customerUsername, '%')));
     
 END //
 DELIMITER ;
@@ -88,26 +88,26 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetCustomerInfoByCustomerName;
 
 DELIMITER //
-CREATE PROCEDURE GetCustomerInfoByCustomerLastName (IN customerLastName VARCHAR(50))
+CREATE PROCEDURE GetCustomerInfoByUsername (IN customerUsername VARCHAR(50))
 BEGIN
 	SELECT CONCAT(c.first_name, c.last_name) AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Postcode', a.city AS City
     FROM Customer c
     JOIN Address a ON c.address = a.address_id
-    WHERE c.last_name LIKE CONCAT('%', customerLastName, '%');
+    WHERE c.username = customerUsername;
 END //
 DELIMITER ;
 
 -- Get orders by customer
-DROP PROCEDURE IF EXISTS GetOrdersByCustomer;
+DROP PROCEDURE IF EXISTS GetOrdersByCustomerUsername;
 
 DELIMITER //
-CREATE PROCEDURE GetOrdersByCustomer (IN customerLastName VARCHAR(50))
+CREATE PROCEDURE GetOrdersByCustomer (IN customerUsername VARCHAR(50))
 BEGIN
 	SELECT p.order_number, b.title, c.name FROM BookOrder o
     JOIN Purchase p ON o.order_number = p.order_id
     JOIN Customer c ON p.customer = c.customer_id
     JOIN Book b ON o.book = b.book_id
-    WHERE c.name LIKE CONCAT('%', customerLastName, '%');
+    WHERE c.username = customerUsername;
 END //
 DELIMITER ;
 
@@ -129,6 +129,8 @@ DROP PROCEDURE IF EXISTS CreateNewUser;
 
 DELIMITER //
 CREATE PROCEDURE CreateNewUser (
+	IN customerUsername VARCHAR(64),
+    IN customerPassword VARCHAR(64),
     IN customerFirstName VARCHAR(50), 
     IN customerLastName VARCHAR(50),
     IN customerMail VARCHAR(50), 
@@ -137,7 +139,7 @@ CREATE PROCEDURE CreateNewUser (
 )
 BEGIN
 	INSERT INTO Customer
-    VALUES (DEFAULT, CONCAT(customerFirstName, ' '), customerLastName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
+    VALUES (DEFAULT, customerUsername, customerPassword, CONCAT(customerFirstName, ' '), customerLastName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
 END //
 DELIMITER ;
 

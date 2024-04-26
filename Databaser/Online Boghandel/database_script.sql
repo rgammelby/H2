@@ -52,6 +52,8 @@ CREATE INDEX city_index ON Address(city) USING BTREE;
 -- Customer with address reference
 CREATE TABLE Customer (
 	customer_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(64) UNIQUE NOT NULL,
+	password VARCHAR(64) NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
@@ -63,6 +65,8 @@ CREATE INDEX customer_index ON Customer(last_name) USING BTREE;
 CREATE INDEX customer_name_index ON Customer(first_name) USING BTREE;
 CREATE INDEX email_index ON Customer(email) USING BTREE;
 CREATE INDEX address_index ON Customer(road_and_number) USING BTREE;
+CREATE INDEX username_index ON Customer(username) USING BTREE;
+CREATE INDEX passwd_index ON Customer(password) USING BTREE;
     
 -- Name 'Order' unavailable
 -- Each order (purchase) belongs to a user
@@ -578,13 +582,13 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS CreateNewOrder;
 
 DELIMITER //
-CREATE PROCEDURE CreateNewOrder (IN customerName VARCHAR(50))
+CREATE PROCEDURE CreateNewOrder (IN customerUsername VARCHAR(64))
 BEGIN
 	DECLARE orderNumber INT;
 	CALL GenerateOrderNumber(orderNumber);
     SELECT orderNumber;
     INSERT INTO Purchase
-    VALUES (DEFAULT, orderNumber, (SELECT customer_id FROM Customer WHERE name LIKE CONCAT('%', customerName, '%')));
+    VALUES (DEFAULT, orderNumber, (SELECT customer_id FROM Customer WHERE username LIKE CONCAT('%', customerUsername, '%')));
     
 END //
 DELIMITER ;
@@ -644,26 +648,26 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetCustomerInfoByCustomerName;
 
 DELIMITER //
-CREATE PROCEDURE GetCustomerInfoByCustomerLastName (IN customerLastName VARCHAR(50))
+CREATE PROCEDURE GetCustomerInfoByUsername (IN customerUsername VARCHAR(50))
 BEGIN
 	SELECT CONCAT(c.first_name, c.last_name) AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Postcode', a.city AS City
     FROM Customer c
     JOIN Address a ON c.address = a.address_id
-    WHERE c.last_name LIKE CONCAT('%', customerLastName, '%');
+    WHERE c.username = customerUsername;
 END //
 DELIMITER ;
 
 -- Get orders by customer
-DROP PROCEDURE IF EXISTS GetOrdersByCustomer;
+DROP PROCEDURE IF EXISTS GetOrdersByCustomerUsername;
 
 DELIMITER //
-CREATE PROCEDURE GetOrdersByCustomer (IN customerLastName VARCHAR(50))
+CREATE PROCEDURE GetOrdersByCustomer (IN customerUsername VARCHAR(50))
 BEGIN
 	SELECT p.order_number, b.title, c.name FROM BookOrder o
     JOIN Purchase p ON o.order_number = p.order_id
     JOIN Customer c ON p.customer = c.customer_id
     JOIN Book b ON o.book = b.book_id
-    WHERE c.name LIKE CONCAT('%', customerLastName, '%');
+    WHERE c.username = customerUsername;
 END //
 DELIMITER ;
 
@@ -685,6 +689,8 @@ DROP PROCEDURE IF EXISTS CreateNewUser;
 
 DELIMITER //
 CREATE PROCEDURE CreateNewUser (
+	IN customerUsername VARCHAR(64),
+    IN customerPassword VARCHAR(64),
     IN customerFirstName VARCHAR(50), 
     IN customerLastName VARCHAR(50),
     IN customerMail VARCHAR(50), 
@@ -693,7 +699,7 @@ CREATE PROCEDURE CreateNewUser (
 )
 BEGIN
 	INSERT INTO Customer
-    VALUES (DEFAULT, CONCAT(customerFirstName, ' '), customerLastName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
+    VALUES (DEFAULT, customerUsername, customerPassword, CONCAT(customerFirstName, ' '), customerLastName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
 END //
 DELIMITER ;
 
@@ -824,16 +830,16 @@ VALUES
     ('Twilight', 8, 120, 1);
     
 -- default, name, mail, address, address_id
-INSERT INTO Customer (first_name, last_name, email, road_and_number, address)
+INSERT INTO Customer (username, password, first_name, last_name, email, road_and_number, address)
 VALUES 
-	('Sascha', 'Gammelby', 's@mail.dk', 'Søborg Hovedgade 9', (SELECT address_id FROM address WHERE postcode = '2870')),
-	('Christine', 'Grindsted', 'c@mail.dk', 'Toftevej 20', (SELECT address_id FROM address WHERE postcode = '7700')),
-	('Bo', 'Bjørnsson', 'bb@mail.dk', 'Vinkelvej 1', (SELECT address_id FROM address WHERE postcode = '4220')),
-    ('Benjamin', 'Lohse', 'b@mail.dk', 'Jagtvej 139', (SELECT address_id FROM address WHERE postcode = '2200')),
-    ('Henriette', 'Bjerregaard', 'h@mail.dk', 'Ved Klostret 10', (SELECT address_id FROM address WHERE postcode = '2100')),
-    ('Markus', 'Åland', 'm@mail.dk', 'Elmegårdsvænget 19', (SELECT address_id FROM address WHERE postcode = '8210')),
-    ('Mette', 'Måløv', 'mm@mail.dk', 'Asfaltvej 9', (SELECT address_id FROM address WHERE postcode = '9000')),
-    ('Anne-Marie', 'Bisse', 'am@mail.dk', 'Nybro Vænge', (SELECT address_id FROM address WHERE postcode = '2800'));
+	('sgam', SHA2('admin', 256), 'Sascha ', 'Gammelby', 's@mail.dk', 'Søborg Hovedgade 9', (SELECT address_id FROM address WHERE postcode = '2870')),
+	('cgri', SHA2('1234', 256), 'Christine ', 'Grindsted', 'c@mail.dk', 'Toftevej 20', (SELECT address_id FROM address WHERE postcode = '7700')),
+	('bbjo', SHA2('aosdf', 256), 'Bo ', 'Bjørnsson', 'bb@mail.dk', 'Vinkelvej 1', (SELECT address_id FROM address WHERE postcode = '4220')),
+    ('bloh', SHA2('osn8d', 256), 'Benjamin ', 'Lohse', 'b@mail.dk', 'Jagtvej 139', (SELECT address_id FROM address WHERE postcode = '2200')),
+    ('hbje', SHA2('minkatersød', 256), 'Henriette ', 'Bjerregaard', 'h@mail.dk', 'Ved Klostret 10', (SELECT address_id FROM address WHERE postcode = '2100')),
+    ('maal', SHA2('aarhusw', 256), 'Markus ', 'Åland', 'm@mail.dk', 'Elmegårdsvænget 19', (SELECT address_id FROM address WHERE postcode = '8210')),
+    ('mmaa', SHA2('øvherlev', 256), 'Mette ', 'Måløv', 'mm@mail.dk', 'Asfaltvej 9', (SELECT address_id FROM address WHERE postcode = '9000')),
+    ('ambi', SHA2('birger', 256), 'Anne-Marie ', 'Bisse', 'am@mail.dk', 'Nybro Vænge', (SELECT address_id FROM address WHERE postcode = '2800'));
 
 -- Inserting dummy data into the Purchase table
 SET @order1 = 0;
