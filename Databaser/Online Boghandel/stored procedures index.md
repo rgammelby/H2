@@ -51,22 +51,22 @@ The authorName variable can contain either a first or a last name, if any match,
 This procedure displays the author associated with a specific book that exists in the database.
 
 
-### GetCustomerInfoByCustomerLastName (
+### GetCustomerInfoByUsername (
     IN customerLastName VARCHAR(50)
 )
 
 This procedure displays all stored information regarding a specific user/customer.
 
-The customerLastName variable must contain the user's last name.
+The customerLastName variable must contain the user's username.
 
 
-### GetOrdersByCustomer (
+### GetOrdersByCustomerUsername (
     IN customerLastName VARCHAR(50)
 )
 
 This procedure displays all orders made by a specific customer.
 
-The customerLastName variable must contain the user's last name.
+The customerLastName variable must contain the user's username.
 
 
 ### GetBookInfoByBookTitle (
@@ -79,6 +79,8 @@ The bookTitle variable must contain the book's title.
 
 
 ### CreateNewUser (
+   IN customerUsername VARCHAR(64),
+   IN customerPassword VARCHAR(64),
    IN customerName VARCHAR(50),
    IN customerMail VARCHAR(50),
    IN customerAddress VARCHAR(50),
