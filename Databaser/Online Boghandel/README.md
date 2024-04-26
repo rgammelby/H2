@@ -39,10 +39,9 @@ Please note that despite running Windows, the path must be written with forward 
 ### Execute order
 
 If you choose to execute the individual scripts via shell, they should be executed in this order:
-1) `databasecreation.sql`
-2) `tablecreation.sql`
-3) `triggers.sql`
-4) `storedprocedures.sql`
-5) `dummydata.sql`
-
-Note, that if you choose to execute the `database_script.sql` file instead, procedure calls to test stored procedures exist under a comment at the bottom of the page.
+1) `adminusercreation.sql`
+2) `databasecreation.sql`
+3) `tablecreation.sql`
+4) `triggers.sql`
+5) `storedprocedures.sql`
+6) `dummydata.sql`
