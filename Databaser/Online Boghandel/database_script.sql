@@ -699,7 +699,7 @@ CREATE PROCEDURE CreateNewUser (
 )
 BEGIN
 	INSERT INTO Customer
-    VALUES (DEFAULT, customerUsername, customerPassword, CONCAT(customerFirstName, ' '), customerLastName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
+    VALUES (DEFAULT, customerUsername, SHA2(customerPassword, 256), CONCAT(customerFirstName, ' '), customerLastName, customerMail, customerAddress, (SELECT address_id FROM Address WHERE postcode = addressIdFromPostcode));
 END //
 DELIMITER ;
 
