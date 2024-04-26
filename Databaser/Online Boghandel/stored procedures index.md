@@ -13,7 +13,7 @@ The order number is unique and all purchased books in a single order is related 
 
 
 ### CreateNewOrder (
-    IN customerName VARCHAR(256)
+    IN customerName VARCHAR(50)
 )
 
 This procedure inserts a new order with a randomly generated order number.
@@ -36,7 +36,7 @@ Day & month inputs are not optional.
 
 
 ### GetBooksByAuthor (
-    IN authorName VARCHAR(256)
+    IN authorName VARCHAR(50)
 )
 
 This procedure displays all books written by a certain author.
@@ -52,7 +52,7 @@ This procedure displays the author associated with a specific book that exists i
 
 
 ### GetCustomerInfoByCustomerLastName (
-    IN customerLastName VARCHAR(256)
+    IN customerLastName VARCHAR(50)
 )
 
 This procedure displays all stored information regarding a specific user/customer.
@@ -61,7 +61,7 @@ The customerLastName variable must contain the user's last name.
 
 
 ### GetOrdersByCustomer (
-    IN customerLastName VARCHAR(256)
+    IN customerLastName VARCHAR(50)
 )
 
 This procedure displays all orders made by a specific customer.
@@ -79,9 +79,9 @@ The bookTitle variable must contain the book's title.
 
 
 ### CreateNewUser (
-   IN customerName VARCHAR(256),
-   IN customerMail VARCHAR(256),
-   IN customerAddress VARCHAR(256),
+   IN customerName VARCHAR(50),
+   IN customerMail VARCHAR(50),
+   IN customerAddress VARCHAR(50),
    IN addressIdFromPostcode SMALLINT
 )
 
@@ -93,8 +93,8 @@ A relation is automatically created to the Address table; when the procedure is 
 
 
 ### CreateNewAuthor (
-    IN authorName VARCHAR(256), 
-    IN authorLastName varchar(256)
+    IN authorName VARCHAR(50), 
+    IN authorLastName varchar(50)
 )
 
 This procedure inserts a new author into the database. It takes the author's first and last names as parameters.
@@ -115,8 +115,8 @@ The new genre will not be created if it already exists in the database.
 
 ### CreateNewBook (
    IN bookTitle VARCHAR(256),
-   IN bookAuthor VARCHAR(256),
-   IN bookAuthorLastName VARCHAR(256),
+   IN bookAuthor VARCHAR(50),
+   IN bookAuthorLastName VARCHAR(50),
    IN bookPrice SMALLINT,
    IN bookGenre VARCHAR(50)
 )

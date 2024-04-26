@@ -4,15 +4,15 @@ USE OnlineBookStore;
 
 CREATE TABLE Author (
 	author_id SMALLINT PRIMARY KEY AUTO_INCREMENT,  -- Using smallints to conserve space, as I don't figure I'll have very many entries, otherwise int instead of smallint
-    first_name VARCHAR(256) NOT NULL,  -- Using varchar to accept any character in name
-    last_name VARCHAR(256) NOT NULL
+    first_name VARCHAR(50) NOT NULL,  -- Using varchar to accept any character in name
+    last_name VARCHAR(50) NOT NULL
 );
 CREATE INDEX author_index ON Author(last_name) USING BTREE;
 CREATE INDEX author_first_name_index ON Author(first_name) USING BTREE;
 
 CREATE TABLE Genre (
 	genre_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(256) NOT NULL
+    name VARCHAR(50) NOT NULL
 );
 CREATE INDEX genre_index ON Genre(name) USING BTREE;
 
@@ -41,10 +41,10 @@ CREATE INDEX city_index ON Address(city) USING BTREE;
 -- Customer with address reference
 CREATE TABLE Customer (
 	customer_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(256) NOT NULL,
-    last_name VARCHAR(256) NOT NULL,
-    email VARCHAR(256) NOT NULL,
-    road_and_number VARCHAR(256) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    road_and_number VARCHAR(50) NOT NULL,
     address SMALLINT NOT NULL,
     FOREIGN KEY (address) REFERENCES Address(address_id)
 );
@@ -80,7 +80,7 @@ CREATE TABLE bogreden_log (
 	log_id INT PRIMARY KEY AUTO_INCREMENT,
     change_type VARCHAR(30),
     id_key SMALLINT,
-    table_name VARCHAR(64),
+    table_name VARCHAR(20),
     log_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX change_type_index ON bogreden_log(change_type) USING BTREE;

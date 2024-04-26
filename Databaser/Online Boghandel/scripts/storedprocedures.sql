@@ -22,7 +22,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS CreateNewOrder;
 
 DELIMITER //
-CREATE PROCEDURE CreateNewOrder (IN customerName VARCHAR(256))
+CREATE PROCEDURE CreateNewOrder (IN customerName VARCHAR(50))
 BEGIN
 	DECLARE orderNumber INT;
 	CALL GenerateOrderNumber(orderNumber);
@@ -61,7 +61,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetBooksByAuthor;
 
 DELIMITER //
-CREATE PROCEDURE GetBooksByAuthor (IN authorName VARCHAR(256))
+CREATE PROCEDURE GetBooksByAuthor (IN authorName VARCHAR(50))
 BEGIN 
 	SELECT DISTINCT b.title AS Title, b.price AS 'Price (kr.)', CONCAT(a.first_name, a.last_name) AS Author 
     FROM Book b
@@ -88,7 +88,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetCustomerInfoByCustomerName;
 
 DELIMITER //
-CREATE PROCEDURE GetCustomerInfoByCustomerLastName (IN customerLastName VARCHAR(256))
+CREATE PROCEDURE GetCustomerInfoByCustomerLastName (IN customerLastName VARCHAR(50))
 BEGIN
 	SELECT CONCAT(c.first_name, c.last_name) AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Postcode', a.city AS City
     FROM Customer c
@@ -101,7 +101,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetOrdersByCustomer;
 
 DELIMITER //
-CREATE PROCEDURE GetOrdersByCustomer (IN customerLastName VARCHAR(256))
+CREATE PROCEDURE GetOrdersByCustomer (IN customerLastName VARCHAR(50))
 BEGIN
 	SELECT p.order_number, b.title, c.name FROM BookOrder o
     JOIN Purchase p ON o.order_number = p.order_id
@@ -129,10 +129,10 @@ DROP PROCEDURE IF EXISTS CreateNewUser;
 
 DELIMITER //
 CREATE PROCEDURE CreateNewUser (
-    IN customerFirstName VARCHAR(256), 
-    IN customerLastName VARCHAR(256),
-    IN customerMail VARCHAR(256), 
-    IN customerAddress VARCHAR(256), 
+    IN customerFirstName VARCHAR(50), 
+    IN customerLastName VARCHAR(50),
+    IN customerMail VARCHAR(50), 
+    IN customerAddress VARCHAR(50), 
     IN addressIdFromPostcode SMALLINT
 )
 BEGIN
@@ -144,7 +144,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS CreateNewAuthor;
 
 DELIMITER //
-CREATE PROCEDURE CreateNewAuthor (IN authorName VARCHAR(256), IN authorLastName varchar(256))
+CREATE PROCEDURE CreateNewAuthor (IN authorName VARCHAR(50), IN authorLastName varchar(50))
 BEGIN
 	DECLARE existingAuthor INT;
 	SELECT author_id FROM Author WHERE first_name LIKE CONCAT('%', authorName, '%') AND last_name LIKE CONCAT('%', authorLastName, '%') INTO existingAuthor;
@@ -179,8 +179,8 @@ DROP PROCEDURE IF EXISTS CreateNewBook;
 DELIMITER //
 CREATE PROCEDURE CreateNewBook (
     IN bookTitle VARCHAR(256), 
-    IN bookAuthor VARCHAR(256), 
-    IN bookAuthorLastName VARCHAR(256),
+    IN bookAuthor VARCHAR(50), 
+    IN bookAuthorLastName VARCHAR(50),
     IN bookPrice SMALLINT, 
     IN bookGenre VARCHAR(50)
 )

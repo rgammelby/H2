@@ -15,15 +15,15 @@ USE OnlineBookStore;
 
 CREATE TABLE Author (
 	author_id SMALLINT PRIMARY KEY AUTO_INCREMENT,  -- Using smallints to conserve space, as I don't figure I'll have very many entries, otherwise int instead of smallint
-    first_name VARCHAR(256) NOT NULL,  -- Using varchar to accept any character in name
-    last_name VARCHAR(256) NOT NULL
+    first_name VARCHAR(50) NOT NULL,  -- Using varchar to accept any character in name
+    last_name VARCHAR(50) NOT NULL
 );
 CREATE INDEX author_index ON Author(last_name) USING BTREE;
 CREATE INDEX author_first_name_index ON Author(first_name) USING BTREE;
 
 CREATE TABLE Genre (
 	genre_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(256) NOT NULL
+    name VARCHAR(50) NOT NULL
 );
 CREATE INDEX genre_index ON Genre(name) USING BTREE;
 
@@ -52,10 +52,10 @@ CREATE INDEX city_index ON Address(city) USING BTREE;
 -- Customer with address reference
 CREATE TABLE Customer (
 	customer_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(256) NOT NULL,
-    last_name VARCHAR(256) NOT NULL,
-    email VARCHAR(256) NOT NULL,
-    road_and_number VARCHAR(256) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    road_and_number VARCHAR(50) NOT NULL,
     address SMALLINT NOT NULL,
     FOREIGN KEY (address) REFERENCES Address(address_id)
 );
@@ -91,7 +91,7 @@ CREATE TABLE bogreden_log (
 	log_id INT PRIMARY KEY AUTO_INCREMENT,
     change_type VARCHAR(30),
     id_key SMALLINT,
-    table_name VARCHAR(64),
+    table_name VARCHAR(20),
     log_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX change_type_index ON bogreden_log(change_type) USING BTREE;
@@ -578,7 +578,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS CreateNewOrder;
 
 DELIMITER //
-CREATE PROCEDURE CreateNewOrder (IN customerName VARCHAR(256))
+CREATE PROCEDURE CreateNewOrder (IN customerName VARCHAR(50))
 BEGIN
 	DECLARE orderNumber INT;
 	CALL GenerateOrderNumber(orderNumber);
@@ -617,7 +617,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetBooksByAuthor;
 
 DELIMITER //
-CREATE PROCEDURE GetBooksByAuthor (IN authorName VARCHAR(256))
+CREATE PROCEDURE GetBooksByAuthor (IN authorName VARCHAR(50))
 BEGIN 
 	SELECT DISTINCT b.title AS Title, b.price AS 'Price (kr.)', CONCAT(a.first_name, a.last_name) AS Author 
     FROM Book b
@@ -644,7 +644,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetCustomerInfoByCustomerName;
 
 DELIMITER //
-CREATE PROCEDURE GetCustomerInfoByCustomerLastName (IN customerLastName VARCHAR(256))
+CREATE PROCEDURE GetCustomerInfoByCustomerLastName (IN customerLastName VARCHAR(50))
 BEGIN
 	SELECT CONCAT(c.first_name, c.last_name) AS Name, c.email AS 'E-mail', c.road_and_number AS Address, a.postcode AS 'Postcode', a.city AS City
     FROM Customer c
@@ -657,7 +657,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetOrdersByCustomer;
 
 DELIMITER //
-CREATE PROCEDURE GetOrdersByCustomer (IN customerLastName VARCHAR(256))
+CREATE PROCEDURE GetOrdersByCustomer (IN customerLastName VARCHAR(50))
 BEGIN
 	SELECT p.order_number, b.title, c.name FROM BookOrder o
     JOIN Purchase p ON o.order_number = p.order_id
@@ -685,10 +685,10 @@ DROP PROCEDURE IF EXISTS CreateNewUser;
 
 DELIMITER //
 CREATE PROCEDURE CreateNewUser (
-    IN customerFirstName VARCHAR(256), 
-    IN customerLastName VARCHAR(256),
-    IN customerMail VARCHAR(256), 
-    IN customerAddress VARCHAR(256), 
+    IN customerFirstName VARCHAR(50), 
+    IN customerLastName VARCHAR(50),
+    IN customerMail VARCHAR(50), 
+    IN customerAddress VARCHAR(50), 
     IN addressIdFromPostcode SMALLINT
 )
 BEGIN
@@ -700,7 +700,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS CreateNewAuthor;
 
 DELIMITER //
-CREATE PROCEDURE CreateNewAuthor (IN authorName VARCHAR(256), IN authorLastName varchar(256))
+CREATE PROCEDURE CreateNewAuthor (IN authorName VARCHAR(50), IN authorLastName varchar(50))
 BEGIN
 	DECLARE existingAuthor INT;
 	SELECT author_id FROM Author WHERE first_name LIKE CONCAT('%', authorName, '%') AND last_name LIKE CONCAT('%', authorLastName, '%') INTO existingAuthor;
@@ -735,8 +735,8 @@ DROP PROCEDURE IF EXISTS CreateNewBook;
 DELIMITER //
 CREATE PROCEDURE CreateNewBook (
     IN bookTitle VARCHAR(256), 
-    IN bookAuthor VARCHAR(256), 
-    IN bookAuthorLastName VARCHAR(256),
+    IN bookAuthor VARCHAR(50), 
+    IN bookAuthorLastName VARCHAR(50),
     IN bookPrice SMALLINT, 
     IN bookGenre VARCHAR(50)
 )
