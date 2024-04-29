@@ -720,6 +720,24 @@ BEGIN
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS Login;
+
+DELIMITER //
+CREATE PROCEDURE Login(
+	IN customerUsername VARCHAR(64),
+    IN customerPassword VARCHAR(256)
+    )
+BEGIN
+	DECLARE validLogin SMALLINT;
+    SELECT customer_id FROM Customer WHERE username = customerUsername AND SHA2(customerPassword, 256) = password INTO validLogin;
+    
+    IF validLogin IS NOT NULL THEN
+		SELECT true;
+	ELSE SELECT false;
+	END IF;
+END//
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS CreateNewGenre;
 
 DELIMITER //
@@ -788,6 +806,19 @@ BEGIN
     VALUES (DEFAULT, orderNumber, (SELECT book_id FROM Book WHERE title LIKE CONCAT('%', orderedBook, '%')));
 END //
 DELIMITER ; 
+
+DROP PROCEDURE IF EXISTS Login;
+
+DELIMITER //
+CREATE PROCEDURE Login(IN customerUsername VARCHAR(64), IN customerPassword VARCHAR(64))
+BEGIN
+	IF (SELECT password FROM Customer WHERE username = customerUsername) = SHA2(customerPassword, 256) THEN
+		SELECT "Login successful. " AS Login;
+	ELSE 
+		SELECT "Incorrect username or password. " AS Login;
+    END IF;
+END //
+DELIMITER ;
 
 -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES -- STORED PROCEDURES
 
@@ -894,4 +925,3 @@ VALUES
 	(8, 8),
 	(8, 3),
 	(8, 4);
-    

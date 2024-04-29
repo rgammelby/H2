@@ -138,3 +138,10 @@ The new book will not be created if it already exists in the database.
 This procedure is meant to be called once per book when a customer places a new order.
 
 The procedure will create a new BookOrder item; a purchased book associated with the relevant order number.
+
+### Login (
+    IN customerUsername VARCHAR(64),
+    IN customerPassword VARCHAR(64)
+)
+
+This procedure validates user login credentials.
