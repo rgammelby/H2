@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <title>Musical instruments</title>
+</head>
+
+<style>
+    input[type="button"] {
+        margin: 5px;
+    }
+</style>
+
+<body>
+    <h3>Musical instruments</h3>
+    <div>
+        <input type="button" value="Instrument properties" onclick="printInstrumentProperties();">
+        <p id="properties">
+
+        </p>
+    </div>
+    <div>
+        <label for="harp">Harp</label>
+        <input type="button" id="harp" value="Play!" onclick="new Harp().play('harp')">
+    </div>
+    <div>
+        <label for="guitar">Guitar</label>
+        <input type="button" id="guitar" value="Play!" onclick="new Guitar().play('guitar');">
+    </div>
+    <div>
+        <label for="sax">Saxophone</label>
+        <input type="button" id="sax" value="Play!" onclick="new Saxophone().play('sax');">
+    </div>
+    <div>
+        <label for="flute">Flute</label>
+        <input type="button" id="flute" value="Play!" onclick="new Flute().play('flute');">
+    </div>
+
+    <script src="Instruments.js"></script>
+</body>
+
+</html>

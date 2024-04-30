@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <title>Skattejagt</title>
+    <link rel="stylesheet" href="treasure_map_styling.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="treasure" class="fade-in">
+        <img src="treasure.png">
+    </div>
+
+    <div id="map">
+    </div>
+
+    <div id="overlay">
+        <p id="help">Klik et sted på øen og se, om du kan finde skatten! Du har 5 klik. </p>
+    </div>
+
+    <div id="restart-button-div" style="display: none;">
+    </div>
+
+    <canvas id="canvas" hidden="true;"></canvas>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/matthewmain/VerletExpressJS@latest/verletExpress.js"></script>
+    <script src="treasurehunt.js"></script>
+</body>
+
+</html>
