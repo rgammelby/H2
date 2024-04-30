@@ -1,13 +1,5 @@
 # Opret et lille autohjælpsfirma
 
-### Lav / brug niveauerne
-* Service cyklus
-* Service Strategy 
-* Service Design 
-* Service Transition 
-* Service Operation 
-* Continual Service Improvement
-
 ### Hvilken service vil I udbyde?
 
 ### Service Strategy
@@ -17,7 +9,7 @@
 **Employee incident policy**
 Vedr. ansatte i tilfælde af 
 * sygdom 
-* opgiselser 
+* opsigelser 
 * ferie
 
 osv.
