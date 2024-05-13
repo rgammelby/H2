@@ -1,0 +1,7 @@
+C:\Users\rfj594\source\repos\ThreadingØvelser\ThreadingØvelser\bin\Debug\ThreadingØvelser.exe.config
+C:\Users\rfj594\source\repos\ThreadingØvelser\ThreadingØvelser\bin\Debug\ThreadingØvelser.exe
+C:\Users\rfj594\source\repos\ThreadingØvelser\ThreadingØvelser\bin\Debug\ThreadingØvelser.pdb
+C:\Users\rfj594\source\repos\ThreadingØvelser\ThreadingØvelser\obj\Debug\ThreadingØvelser.csproj.AssemblyReference.cache
+C:\Users\rfj594\source\repos\ThreadingØvelser\ThreadingØvelser\obj\Debug\ThreadingØvelser.csproj.CoreCompileInputs.cache
+C:\Users\rfj594\source\repos\ThreadingØvelser\ThreadingØvelser\obj\Debug\ThreadingØvelser.exe
+C:\Users\rfj594\source\repos\ThreadingØvelser\ThreadingØvelser\obj\Debug\ThreadingØvelser.pdb
