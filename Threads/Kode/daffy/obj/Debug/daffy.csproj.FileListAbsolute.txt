@@ -1,0 +1,10 @@
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\daffy\bin\Debug\daffy.exe
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\daffy\bin\Debug\daffy.pdb
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\daffy\obj\Debug\daffy.csprojResolveAssemblyReference.cache
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\daffy\obj\Debug\daffy.Form1.resources
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\daffy\obj\Debug\daffy.Properties.Resources.resources
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\daffy\obj\Debug\daffy.csproj.GenerateResource.Cache
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\daffy\obj\Debug\daffy.exe
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\daffy\obj\Debug\daffy.pdb
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\Dag1\Kode\daffy\obj\Debug\daffy.exe
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\Dag1\Kode\daffy\obj\Debug\daffy.pdb

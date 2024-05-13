@@ -1,0 +1,5 @@
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\mthello\bin\Debug\mthello.exe
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\mthello\bin\Debug\mthello.pdb
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\mthello\obj\Debug\mthello.csprojResolveAssemblyReference.cache
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\mthello\obj\Debug\mthello.exe
+j:\Dokumenter\Google Drev\RINGSTED\H2\TrådProgrammering\materials\multithreading-exercise-files\mthello\obj\Debug\mthello.pdb
