@@ -1,0 +1,7 @@
+C:\Users\rfj594\source\repos\ThreadPoolØvelser\ThreadPoolØvelser\bin\Debug\ThreadPoolØvelser.exe.config
+C:\Users\rfj594\source\repos\ThreadPoolØvelser\ThreadPoolØvelser\bin\Debug\ThreadPoolØvelser.exe
+C:\Users\rfj594\source\repos\ThreadPoolØvelser\ThreadPoolØvelser\bin\Debug\ThreadPoolØvelser.pdb
+C:\Users\rfj594\source\repos\ThreadPoolØvelser\ThreadPoolØvelser\obj\Debug\ThreadPoolØvelser.csproj.AssemblyReference.cache
+C:\Users\rfj594\source\repos\ThreadPoolØvelser\ThreadPoolØvelser\obj\Debug\ThreadPoolØvelser.csproj.CoreCompileInputs.cache
+C:\Users\rfj594\source\repos\ThreadPoolØvelser\ThreadPoolØvelser\obj\Debug\ThreadPoolØvelser.exe
+C:\Users\rfj594\source\repos\ThreadPoolØvelser\ThreadPoolØvelser\obj\Debug\ThreadPoolØvelser.pdb

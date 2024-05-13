@@ -1,0 +1,7 @@
+C:\Users\rfj594\source\repos\ThreadPoolLifeCycle\ThreadPoolLifeCycle\bin\Debug\ThreadPoolLifeCycle.exe.config
+C:\Users\rfj594\source\repos\ThreadPoolLifeCycle\ThreadPoolLifeCycle\bin\Debug\ThreadPoolLifeCycle.exe
+C:\Users\rfj594\source\repos\ThreadPoolLifeCycle\ThreadPoolLifeCycle\bin\Debug\ThreadPoolLifeCycle.pdb
+C:\Users\rfj594\source\repos\ThreadPoolLifeCycle\ThreadPoolLifeCycle\obj\Debug\ThreadPoolLifeCycle.csproj.AssemblyReference.cache
+C:\Users\rfj594\source\repos\ThreadPoolLifeCycle\ThreadPoolLifeCycle\obj\Debug\ThreadPoolLifeCycle.csproj.CoreCompileInputs.cache
+C:\Users\rfj594\source\repos\ThreadPoolLifeCycle\ThreadPoolLifeCycle\obj\Debug\ThreadPoolLifeCycle.exe
+C:\Users\rfj594\source\repos\ThreadPoolLifeCycle\ThreadPoolLifeCycle\obj\Debug\ThreadPoolLifeCycle.pdb
