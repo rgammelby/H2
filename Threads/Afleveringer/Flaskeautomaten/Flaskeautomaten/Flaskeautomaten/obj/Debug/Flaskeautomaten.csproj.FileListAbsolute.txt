@@ -5,3 +5,7 @@ C:\Users\rfj594\source\repos\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeaut
 C:\Users\rfj594\source\repos\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.csproj.CoreCompileInputs.cache
 C:\Users\rfj594\source\repos\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.exe
 C:\Users\rfj594\source\repos\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.pdb
+C:\Users\rfj594\Desktop\ZBC\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.csproj.AssemblyReference.cache
+C:\Users\rfj594\Desktop\ZBC\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.csproj.CoreCompileInputs.cache
+C:\Users\rfj594\Desktop\ZBC\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.exe
+C:\Users\rfj594\Desktop\ZBC\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.pdb
