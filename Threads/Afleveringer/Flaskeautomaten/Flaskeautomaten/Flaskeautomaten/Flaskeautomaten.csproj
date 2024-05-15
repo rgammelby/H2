@@ -43,11 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Singles\Bottle.cs" />
+    <Compile Include="Buffers\BeerConsumerBuffer.cs" />
+    <Compile Include="Buffers\Buffer.cs" />
+    <Compile Include="Buffers\SodaConsumerBuffer.cs" />
+    <Compile Include="Buffers\TransitBuffer.cs" />
+    <Compile Include="Consumers\BeerConsumer.cs" />
+    <Compile Include="Consumers\Consumer.cs" />
+    <Compile Include="Consumers\SodaConsumer.cs" />
+    <Compile Include="Singles\Producer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Singles\Splitter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
