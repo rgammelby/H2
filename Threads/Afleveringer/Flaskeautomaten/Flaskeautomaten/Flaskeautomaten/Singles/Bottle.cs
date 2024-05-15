@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Flaskeautomaten
 {
+    /// <summary>
+    /// The Bottle class generates and contains information about each bottle; designation and serial number.
+    /// </summary>
     class Bottle
     {
         private List<int> SerialNumbers = new List<int>();
@@ -48,7 +51,9 @@ namespace Flaskeautomaten
                 // Stores created serial numbers in a list
                 SerialNumbers.Add(serialNo);
 
+            //debug
             //Console.WriteLine("Unique serial number generated. ");
+
             return serialNo;
         }
     }

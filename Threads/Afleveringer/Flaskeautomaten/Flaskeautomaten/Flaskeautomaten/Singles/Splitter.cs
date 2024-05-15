@@ -8,16 +8,21 @@ using System.Threading.Tasks;
 
 namespace Flaskeautomaten
 {
+    /// <summary>
+    /// The Splitter class sorts bottles by designation and sends them out to the correct buffer.
+    /// </summary>
     class Splitter
     {
         public List<Bottle> SplitterBottles = new List<Bottle>();
 
         object _lock = new object();
 
-        // RETRIEVE BOTTLE FROM SPLITTER LIST
-        public Bottle SendBottleToBuffer()
+        // Retrieves and returns a bottle from the Splitter bottle list
+        public Bottle RetrieveBottleFromList()
         {
-            Console.WriteLine("Getting bottle from Splitter List... ");
+            // debug
+            //Console.WriteLine("Getting bottle from Splitter List... ");
+
             while (true)
             {
                 Monitor.Enter(_lock);
@@ -31,36 +36,41 @@ namespace Flaskeautomaten
 
         public void SplitterSort(BeerConsumerBuffer b, SodaConsumerBuffer s)
         {
-            Console.WriteLine($"SplitterSort is running. SplitterBottles count: {SplitterBottles.Count}");
-
-            // WRITE LISTENER FOR SPLITTER
-
             while (true)
             {
+                // when Splitter bottle list is empty, wait
                 while (SplitterBottles.Count < 1)
                 {
                     Thread.Sleep(500);
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Waiting to receive bottles from transit buffer... ");
-                    Console.ForegroundColor = ConsoleColor.White;
+
+                    //// debug
+                    //Console.ForegroundColor = ConsoleColor.Red;
+                    //Console.WriteLine("Waiting to receive bottles from transit buffer... ");
+                    //Console.ForegroundColor = ConsoleColor.White;
                 }
 
+                // if not empty, begin sorting process
                 while (SplitterBottles.Count > 1)
                 {
                     Monitor.Enter(_lock);
-                    Bottle bottle = SendBottleToBuffer();
+                    Bottle bottle = RetrieveBottleFromList();
                     Console.ForegroundColor = ConsoleColor.Red;
                     var bottleInfo = bottle.ReturnBottleInformation();
 
+                    // add bottle to relevant list based on designation retrieved in ReturnBottleInformation method
                     if (bottleInfo.Item1 == 0)
                     {
                         b.BeerBottles.Add(bottle);
-                        Console.WriteLine("Bottle sent from Splitter to Beer Buffer. ");
+
+                        // debug
+                        //Console.WriteLine("Bottle sent from Splitter to Beer Buffer. ");
                     }
                     else
                     {
                         s.SodaBottles.Add(bottle);
-                        Console.WriteLine("Bottle sent from Splitter to Soda Buffer. ");
+
+                        // debug
+                        //Console.WriteLine("Bottle sent from Splitter to Soda Buffer. ");
                     }
                     Console.ForegroundColor = ConsoleColor.White;
                     Monitor.Exit(_lock);
