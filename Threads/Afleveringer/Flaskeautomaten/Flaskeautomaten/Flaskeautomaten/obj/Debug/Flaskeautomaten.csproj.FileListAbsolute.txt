@@ -9,3 +9,11 @@ C:\Users\rfj594\Desktop\ZBC\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten
 C:\Users\rfj594\Desktop\ZBC\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.csproj.CoreCompileInputs.cache
 C:\Users\rfj594\Desktop\ZBC\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.exe
 C:\Users\rfj594\Desktop\ZBC\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.pdb
+C:\Users\rabga\Desktop\ZBC\H2\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.csproj.AssemblyReference.cache
+C:\Users\rabga\Desktop\ZBC\H2\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.csproj.SuggestedBindingRedirects.cache
+C:\Users\rabga\Desktop\ZBC\H2\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.csproj.CoreCompileInputs.cache
+C:\Users\rabga\Desktop\ZBC\H2\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.exe
+C:\Users\rabga\Desktop\ZBC\H2\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\obj\Debug\Flaskeautomaten.pdb
+C:\Users\rabga\Desktop\ZBC\H2\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\bin\Debug\Flaskeautomaten.exe.config
+C:\Users\rabga\Desktop\ZBC\H2\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\bin\Debug\Flaskeautomaten.exe
+C:\Users\rabga\Desktop\ZBC\H2\Threads\Afleveringer\Flaskeautomaten\Flaskeautomaten\Flaskeautomaten\bin\Debug\Flaskeautomaten.pdb

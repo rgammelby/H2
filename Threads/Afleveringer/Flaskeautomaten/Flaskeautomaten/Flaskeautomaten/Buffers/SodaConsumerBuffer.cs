@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Flaskeautomaten.Buffers
 {
+    /// <summary>
+    /// This buffer class forwards bottles from the splitter specifically addressed to the SODA CONSUMER.
+    /// </summary>
     class SodaConsumerBuffer : Buffer
     {
         // Contains soda bottles as sorted by the Splitter
@@ -15,25 +18,7 @@ namespace Flaskeautomaten.Buffers
 
         object _lock = new object();
 
-        //public override void ReceiveBottles()
-        //{
-        //    var bottleCount = SodaBottles.Count;
-
-        //    while (SodaBottles.Count > 1)
-        //    {
-        //        if (SodaBottles.Count > bottleCount)
-        //        {
-        //            Console.WriteLine($"Bottle received in transit buffer! ");
-        //            bottleCount = SodaBottles.Count;
-
-        //            // SEND TO CONSUMER
-        //            Console.WriteLine("Forwarding bottles to consumer has not been implemented yet. ");
-        //            //SendBottleToSplitter(SodaBottles.Last(), s);
-        //            //SodaBottles.Remove(SodaBottles.Last());
-        //        }
-        //    }
-        //}
-
+        // fowards bottles to relevant consumer (adding to soda consumer's list)
         public override void SendBottleToConsumer(Consumer c)
         {
             SodaConsumer soda = c as SodaConsumer;
@@ -44,15 +29,18 @@ namespace Flaskeautomaten.Buffers
                 {
                     Monitor.Enter(_lock);
                     soda.SodaConsumerBottles.Add(SodaBottles.Last());
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Soda bottle sent to soda consumer! ");
-                    Console.ForegroundColor = ConsoleColor.White;
                     SodaBottles.Remove(SodaBottles.Last());
                     Monitor.Exit(_lock);
+
+                    //// debug
+                    //Console.ForegroundColor = ConsoleColor.Green;
+                    //Console.WriteLine("Soda bottle sent to soda consumer! ");
+                    //Console.ForegroundColor = ConsoleColor.White;
                 }
             }
         }
 
+        // soda forwarding method starts automatically in buffer constructor
         public SodaConsumerBuffer()
         {
             SodaConsumer c = new SodaConsumer();

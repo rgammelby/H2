@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Flaskeautomaten.Consumers
 {
+    /// <summary>
+    /// Tiny Consumer superclass contains the PrintBottleInfo shared between its two child classes.
+    /// </summary>
     class Consumer
     {
-
         // print info about pickups
         public void PrintBottleInfo(Bottle bottle, int amount)
         {

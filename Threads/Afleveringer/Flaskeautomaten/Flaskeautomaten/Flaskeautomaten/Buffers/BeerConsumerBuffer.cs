@@ -18,27 +18,7 @@ namespace Flaskeautomaten.Buffers
 
         object _lock = new object();
 
-        //public override void ReceiveBottles()
-        //{
-        //    var bottleCount = BeerBottles.Count;
-
-        //    // Continues to send beer bottles to beer consumers as long as beer is available
-        //    while (BeerBottles.Count > 0)
-        //    {
-        //        Monitor.Enter(_lock);
-        //        if (BeerBottles.Count > bottleCount)
-        //        {
-        //            //debug
-        //            //Console.WriteLine($"Bottle received in transit buffer! ");
-        //            bottleCount = BeerBottles.Count;
-
-        //            // debug
-        //            Console.WriteLine("Forwarding bottles to consumer has not been implemented yet. ");
-        //        }
-        //        Monitor.Exit(_lock);
-        //    }
-        //}
-
+        // Sends bottles (adds to list of) the relevant consumer
         public override void SendBottleToConsumer(Consumer c)
         {
             BeerConsumer beer = c as BeerConsumer;
@@ -53,6 +33,7 @@ namespace Flaskeautomaten.Buffers
             }
         }
 
+        // constructor starts the beer forwarding process automatically
         public BeerConsumerBuffer()
         {
             BeerConsumer c = new BeerConsumer();

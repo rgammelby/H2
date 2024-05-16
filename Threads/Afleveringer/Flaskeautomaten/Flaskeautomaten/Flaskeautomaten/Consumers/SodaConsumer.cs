@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Flaskeautomaten.Consumers
 {
+    /// <summary>
+    /// The SodaConsumer class is a child of the Consumer superclass. It contains a list and a listener; calls out SODA BOTTLES received, and prints
+    /// info (type and serial number) of the received bottle.
+    /// </summary>
+
     class SodaConsumer : Consumer
     {
         public List<Bottle> SodaConsumerBottles = new List<Bottle>();
