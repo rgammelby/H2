@@ -1,0 +1,7 @@
+C:\Users\rfj594\source\repos\Geometri\Geometri\bin\Debug\Geometri.exe.config
+C:\Users\rfj594\source\repos\Geometri\Geometri\bin\Debug\Geometri.exe
+C:\Users\rfj594\source\repos\Geometri\Geometri\bin\Debug\Geometri.pdb
+C:\Users\rfj594\source\repos\Geometri\Geometri\obj\Debug\Geometri.csproj.AssemblyReference.cache
+C:\Users\rfj594\source\repos\Geometri\Geometri\obj\Debug\Geometri.csproj.CoreCompileInputs.cache
+C:\Users\rfj594\source\repos\Geometri\Geometri\obj\Debug\Geometri.exe
+C:\Users\rfj594\source\repos\Geometri\Geometri\obj\Debug\Geometri.pdb
