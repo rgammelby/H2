@@ -14,9 +14,13 @@ namespace Banker
 
         public string CardNumber { get { return _cardNumber; } }
         public string ExpiryDate { get { return "No expiry date for this card type. "; } }
+        public string Type { get { return _type; } }
+        public string Name { get { return _name; } }
 
-        public Hævekort()
+        public Hævekort(string name) : base(name)
         {
+            _name = name;
+            _type = "Hævekort";
             _cardNumber = GenerateCardNumber();
         }
         public override DateTime GenerateExpiryDate()

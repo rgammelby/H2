@@ -9,40 +9,26 @@ namespace Banker
 {
     internal class Program
     {
-        private static readonly int[] PREFIXES = { 5018, 5020, 5038, 5893, 6304, 6759, 6761, 6762, 6763 };
-
         static void Main(string[] args)
         {
-            Hævekort hk = new Hævekort();
-            var hkc = hk.GenerateCardNumber();
-            Console.WriteLine("Hævekort: " + hkc + $" Length: {Regex.Replace(hkc, @"\s+", "").Length}");
+            // small demonstration
+            Account pj = new Account("Peter", "Jensen", 41, 53915);
+            pj.NewCard("Mastercard");
+            pj.NewCard("VISA");
 
-            Console.WriteLine(hk.CardNumber + " " + hk.ExpiryDate);
+            foreach (Card c in pj.ReturnCards())
+            {
+                Console.WriteLine(c.ReturnCardInformation());
+            }
 
+            Account la = new Account("Lisa", "Andersen", 17, 127);
 
-            Maestro m = new Maestro();
-            var mcn = m.GenerateCardNumber();
-            Console.WriteLine("Maestro: " + mcn + $" Length: {Regex.Replace(mcn, @"\s+", "").Length}");
+            la.NewCard("Visa Electron");
 
-            Console.WriteLine(m.CardNumber + " " + m.ExpiryDate);
-
-            Mastercard mc = new Mastercard();
-            var mcc = mc.GenerateCardNumber();
-            Console.WriteLine("Mastercard: " + mcc + $" Length: {Regex.Replace(mcc, @"\s+", "").Length}");
-
-            Console.WriteLine(mc.CardNumber + " " + mc.ExpiryDate);
-
-            VISA v = new VISA();
-            var vn = v.GenerateCardNumber();
-            Console.WriteLine("VISA: " + vn + $" Length: {Regex.Replace(vn, @"\s+", "").Length}");
-
-            Console.WriteLine(v.CardNumber + " " + v.ExpiryDate);
-
-            Visa_Electron ve = new Visa_Electron();
-            var ven = ve.GenerateCardNumber();
-            Console.WriteLine("Visa Electron: " + ven + $" Length: {Regex.Replace(ven, @"\s+", "").Length}");
-
-            Console.WriteLine(ve.CardNumber + " " + v.ExpiryDate);
+            foreach (Card c in la.ReturnCards())
+            {
+                Console.WriteLine(c.ReturnCardInformation());
+            }
 
             Console.ReadLine();
         }

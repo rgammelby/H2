@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Xml.Linq;
 
 namespace Banker
 {
@@ -12,9 +13,13 @@ namespace Banker
         private const int PREFIX = 4;
         public string CardNumber { get { return _cardNumber; } }
         public DateTime ExpiryDate { get { return _expiry; } }
+        public string Type { get { return _type; } }
+        public string Name { get { return _name; } }
 
-        public VISA()
+        public VISA(string name) : base(name)
         {
+            _name = name;
+            _type = "VISA";
             _cardNumber = GenerateCardNumber();
             _expiry = GenerateExpiryDate();
         }

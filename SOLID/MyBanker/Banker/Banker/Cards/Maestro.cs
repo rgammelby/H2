@@ -12,9 +12,13 @@ namespace Banker
         private readonly int[] PREFIX = { 5018, 5020, 5038, 5893, 6304, 6759, 6761, 6762, 6763 };
         public string CardNumber { get { return _cardNumber; } }
         public DateTime ExpiryDate { get { return _expiry; } }
+        public string Type { get { return _type; } }
+        public string Name { get { return _name; } }
 
-        public Maestro()
+        public Maestro(string name) : base(name)
         {
+            _name = name;
+            _type = "Maestro";
             _cardNumber = GenerateCardNumber();
             _expiry = GenerateExpiryDate();
         }
