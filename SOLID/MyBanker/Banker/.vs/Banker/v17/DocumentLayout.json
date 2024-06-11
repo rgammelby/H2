@@ -1,0 +1,190 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\rfj594\\source\\repos\\Banker\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\cards\\h\u00E6vekort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\cards\\h\u00E6vekort.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\cards\\card.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\cards\\card.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\bank.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\bank.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\cards\\visa_electron.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\cards\\visa_electron.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\cards\\visa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\cards\\visa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\cards\\mastercard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\cards\\mastercard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|c:\\users\\rfj594\\source\\repos\\banker\\banker\\cards\\maestro.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{65B84515-287C-497F-BC51-218B3FEBC6F0}|Banker\\Banker.csproj|solutionrelative:banker\\cards\\maestro.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Account.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Account.cs",
+              "RelativeDocumentMoniker": "Banker\\Account.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Account.cs",
+              "RelativeToolTip": "Banker\\Account.cs",
+              "ViewState": "AQIAABUAAAAAAAAAAAAwwBMAAABGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T10:24:03.591Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\User.cs",
+              "RelativeDocumentMoniker": "Banker\\User.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\User.cs",
+              "RelativeToolTip": "Banker\\User.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T11:14:05.101Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Visa_Electron.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\Visa_Electron.cs",
+              "RelativeDocumentMoniker": "Banker\\Cards\\Visa_Electron.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\Visa_Electron.cs",
+              "RelativeToolTip": "Banker\\Cards\\Visa_Electron.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T10:59:03.695Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Maestro.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\Maestro.cs",
+              "RelativeDocumentMoniker": "Banker\\Cards\\Maestro.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\Maestro.cs",
+              "RelativeToolTip": "Banker\\Cards\\Maestro.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T10:58:56.919Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Card.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\Card.cs",
+              "RelativeDocumentMoniker": "Banker\\Cards\\Card.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\Card.cs",
+              "RelativeToolTip": "Banker\\Cards\\Card.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T10:25:42.217Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "VISA.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\VISA.cs",
+              "RelativeDocumentMoniker": "Banker\\Cards\\VISA.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\VISA.cs",
+              "RelativeToolTip": "Banker\\Cards\\VISA.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T10:25:20.75Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Mastercard.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\Mastercard.cs",
+              "RelativeDocumentMoniker": "Banker\\Cards\\Mastercard.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\Mastercard.cs",
+              "RelativeToolTip": "Banker\\Cards\\Mastercard.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAABEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T10:25:17.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "H\u00E6vekort.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\H\u00E6vekort.cs",
+              "RelativeDocumentMoniker": "Banker\\Cards\\H\u00E6vekort.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Cards\\H\u00E6vekort.cs",
+              "RelativeToolTip": "Banker\\Cards\\H\u00E6vekort.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAAwA8AAABYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T10:25:11.664Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Bank.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Bank.cs",
+              "RelativeDocumentMoniker": "Banker\\Bank.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Bank.cs",
+              "RelativeToolTip": "Banker\\Bank.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAA+AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T10:21:55.035Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Program.cs",
+              "RelativeDocumentMoniker": "Banker\\Program.cs",
+              "ToolTip": "C:\\Users\\rfj594\\source\\repos\\Banker\\Banker\\Program.cs",
+              "RelativeToolTip": "Banker\\Program.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAAwCwAAABAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-10T10:42:14.727Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

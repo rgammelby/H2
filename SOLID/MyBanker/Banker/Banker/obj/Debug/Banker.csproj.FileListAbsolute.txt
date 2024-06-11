@@ -1,0 +1,7 @@
+C:\Users\rfj594\source\repos\Banker\Banker\bin\Debug\Banker.exe.config
+C:\Users\rfj594\source\repos\Banker\Banker\bin\Debug\Banker.exe
+C:\Users\rfj594\source\repos\Banker\Banker\bin\Debug\Banker.pdb
+C:\Users\rfj594\source\repos\Banker\Banker\obj\Debug\Banker.csproj.AssemblyReference.cache
+C:\Users\rfj594\source\repos\Banker\Banker\obj\Debug\Banker.csproj.CoreCompileInputs.cache
+C:\Users\rfj594\source\repos\Banker\Banker\obj\Debug\Banker.exe
+C:\Users\rfj594\source\repos\Banker\Banker\obj\Debug\Banker.pdb
