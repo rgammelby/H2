@@ -12,7 +12,9 @@ namespace Kaffemaskinen
         private CoffeeFilter _coffeeFilter;
 
         private const byte MILLILITRES_PER_CUP = 100;
-        private const byte COFFEE_SPOONS_PER_CUP = 1;
+
+        // added for espresso functionality
+        private const byte MILLILITRES_PER_ESPRESSO = 150;
 
         public CoffeeMachine(int waterVolume)
         {
@@ -38,6 +40,18 @@ namespace Kaffemaskinen
             _coffeeFilter.Empty();
 
             // return final cup amount readout
+            return cups;
+        }
+
+        // added for espresso functionality
+        public float BrewEspresso(string serving = "standard")
+        {
+            // uses 1 or 2 shots of espresso depending on standard or double
+            var shots = (serving.ToLower() == "standard") ? 1 : 2;
+            _coffeeFilter.Use(shots);
+
+            float cups = _waterContainer.Use(MILLILITRES_PER_ESPRESSO);
+
             return cups;
         }
     }

@@ -32,5 +32,23 @@ namespace Kaffemaskinen
         {
             _coffeeSpoons = 0;
         }
+
+        // added for espresso functionality
+        public float Use(int coffeeAmount)
+        {
+            if (_coffeeSpoons >= coffeeAmount)
+            {
+                _coffeeSpoons -= (byte)coffeeAmount;
+                return 1;
+            }
+
+            else
+            {
+                float val = (float)_coffeeSpoons / coffeeAmount;
+                _coffeeSpoons = 0;
+
+                return val;
+            }
+        }
     }
 }

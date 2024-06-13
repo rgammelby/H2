@@ -9,5 +9,6 @@ namespace Kaffemaskinen
     public interface IBrew
     {
         float Brew();
+        float BrewEspresso();
     }
 }

@@ -19,6 +19,11 @@ namespace Kaffemaskinen
 
             Console.WriteLine($"{moccamaster.Brew()} cups of coffee brewed. ");
 
+            moccamaster.WaterContainer.Fill(500);
+            moccamaster.Filter.Fill(5);
+
+            Console.WriteLine($"{moccamaster.BrewEspresso()} cups of espresso brewed. ");
+
             Console.ReadLine();
         }
     }

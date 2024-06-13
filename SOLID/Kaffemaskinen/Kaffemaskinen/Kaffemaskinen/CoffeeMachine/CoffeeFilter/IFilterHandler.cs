@@ -11,5 +11,8 @@ namespace Kaffemaskinen
         byte Fill(byte coffeeSpoons);
 
         void Empty();
+
+        // added for espresso functionality
+        float Use(int waterAmount);
     }
 }
