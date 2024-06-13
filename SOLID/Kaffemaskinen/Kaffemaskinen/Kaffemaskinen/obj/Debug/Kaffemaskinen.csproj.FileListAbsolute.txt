@@ -1,0 +1,8 @@
+C:\Users\rabga\source\repos\Kaffemaskinen\Kaffemaskinen\bin\Debug\Kaffemaskinen.exe.config
+C:\Users\rabga\source\repos\Kaffemaskinen\Kaffemaskinen\bin\Debug\Kaffemaskinen.exe
+C:\Users\rabga\source\repos\Kaffemaskinen\Kaffemaskinen\bin\Debug\Kaffemaskinen.pdb
+C:\Users\rabga\source\repos\Kaffemaskinen\Kaffemaskinen\obj\Debug\Kaffemaskinen.csproj.AssemblyReference.cache
+C:\Users\rabga\source\repos\Kaffemaskinen\Kaffemaskinen\obj\Debug\Kaffemaskinen.csproj.SuggestedBindingRedirects.cache
+C:\Users\rabga\source\repos\Kaffemaskinen\Kaffemaskinen\obj\Debug\Kaffemaskinen.csproj.CoreCompileInputs.cache
+C:\Users\rabga\source\repos\Kaffemaskinen\Kaffemaskinen\obj\Debug\Kaffemaskinen.exe
+C:\Users\rabga\source\repos\Kaffemaskinen\Kaffemaskinen\obj\Debug\Kaffemaskinen.pdb
