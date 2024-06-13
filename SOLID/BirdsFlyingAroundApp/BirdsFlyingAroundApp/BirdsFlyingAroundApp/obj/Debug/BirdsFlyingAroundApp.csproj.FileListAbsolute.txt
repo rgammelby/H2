@@ -1,0 +1,8 @@
+C:\Users\rabga\source\repos\BirdsFlyingAroundApp\BirdsFlyingAroundApp\bin\Debug\BirdsFlyingAroundApp.exe.config
+C:\Users\rabga\source\repos\BirdsFlyingAroundApp\BirdsFlyingAroundApp\bin\Debug\BirdsFlyingAroundApp.exe
+C:\Users\rabga\source\repos\BirdsFlyingAroundApp\BirdsFlyingAroundApp\bin\Debug\BirdsFlyingAroundApp.pdb
+C:\Users\rabga\source\repos\BirdsFlyingAroundApp\BirdsFlyingAroundApp\obj\Debug\BirdsFlyingAroundApp.csproj.AssemblyReference.cache
+C:\Users\rabga\source\repos\BirdsFlyingAroundApp\BirdsFlyingAroundApp\obj\Debug\BirdsFlyingAroundApp.csproj.SuggestedBindingRedirects.cache
+C:\Users\rabga\source\repos\BirdsFlyingAroundApp\BirdsFlyingAroundApp\obj\Debug\BirdsFlyingAroundApp.csproj.CoreCompileInputs.cache
+C:\Users\rabga\source\repos\BirdsFlyingAroundApp\BirdsFlyingAroundApp\obj\Debug\BirdsFlyingAroundApp.exe
+C:\Users\rabga\source\repos\BirdsFlyingAroundApp\BirdsFlyingAroundApp\obj\Debug\BirdsFlyingAroundApp.pdb
