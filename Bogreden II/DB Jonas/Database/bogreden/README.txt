@@ -1,0 +1,1 @@
+Jeg har tegnet RDS diagrammet 2 gange, for at demonstrere begge metoder.
