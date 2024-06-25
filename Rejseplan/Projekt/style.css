@@ -1,0 +1,38 @@
+body, html {
+    height: 100%; /* Ensure the body and html have full height */
+    margin: 0; /* Remove default margins */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.input, .suggestions, .tripwrapper {
+    display: flex;
+    flex-direction: column; /* Ensure items stack vertically */
+    justify-content: center; /* Center horizontally within each container */
+    align-items: center; /* Center vertically within each container */
+    max-width: 100%; /* adjust this based on your layout requirements */
+    margin: 0 auto; /* shorthand for margin-left: auto; margin-right: auto; */
+}
+
+#suggestions {
+    position: absolute;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure suggestions appear above other content */
+    outline: none; /* Remove default focus outline */
+}
+
+/* Style for individual suggestion items */
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion:hover {
+    background-color: #f0f0f0;
+}

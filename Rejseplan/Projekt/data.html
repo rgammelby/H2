@@ -1,16 +1,25 @@
 <!DOCTYPE html>
-<script src="./getData.js"></script>
-<body>
-<div id="data">
-    Herunder vil data fra Rejseplanen fremgå:<br>
-
-    <input type="text" id="origin" class="searchInput"><br>
-    <input type="text" id="destination" class="searchInput">
-
-    <input type="button" value="Find rejse">
-
-    <div id="suggestions">
-
+<html>
+    <head>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <script src="./getData.js"></script>
+    <body>
+    <div id="data">
+        Herunder vil data fra Rejseplanen fremgå:<br>
+    
+        <input type="text" id="origin" class="input"><br>
+        <input type="text" id="destination" class="input"><br>
+    
+        <input type="button" id="journey" class="input" value="Find rejse">
+    
+        <div id="suggestions">
+    
+        </div>
+    
+        <div id="tripwrapper">
+    
+        </div>
     </div>
-</div>
-</body>
+    </body>
+</html>
