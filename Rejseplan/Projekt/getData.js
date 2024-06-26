@@ -1,12 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
-    const originField = document.getElementById('origin');
-    const destinationField = document.getElementById('destination');
-    const suggestionsContainer = document.getElementById('suggestions');
 
+    // necessary field declaration
+    const originField = document.getElementById('origin');  // from
+    const destinationField = document.getElementById('destination');  // to
+    const suggestionsContainer = document.getElementById('suggestions');  // stop suggestions
+    const dateField = document.getElementById('date');  // date field
+    dateField.valueAsDate = new Date();  // sets date field = current date
+    setTime();  // set time of time field = current time
+
+    var icons = {
+        "TB":["fa-bus"],
+        "BUS":["fa-bus"],
+        "WALK":["fa-blind"],
+        "REG":["fa-train"],
+        "LYN":["fa-train"]
+    };
+
+    // origin/destination variable declaration; out of scope to support getJourney function.
+    // contain JSON objects of the chosen origin and destination
     let origin;
     let destination;
 
+    // when the name of a stop is typed in (>3 characters) gets a list of stop objects
     originField.addEventListener('input', async () => {
         const query = originField.value;
 
@@ -17,9 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const suggestions = await getData(query);
 
+        // displays suggestions based on return fom getData()
         displaySuggestions(suggestions.LocationList.StopLocation, originField);
     });
 
+    // -//- but for destination rather than origin
     destinationField.addEventListener('input', async () => {
         const query = destinationField.value;
 
@@ -33,162 +50,116 @@ document.addEventListener("DOMContentLoaded", () => {
         displaySuggestions(suggestions.LocationList.StopLocation, destinationField);
     });
 
+    // is called with the returned list of objects from getData() as well as the field it applies to (origin/destination)
     function displaySuggestions(suggestions, field) {
         suggestionsContainer.innerHTML = '';
 
-        //console.log("Suggestions: ", suggestions)
-
+        // sets suggestionContainer div visible
         suggestionsContainer.style.display = 'block';
 
+        // iterates through each object in returned list
         suggestions.forEach(suggestion => {
+            // creates a div class="suggestion" for each suggestion with the name of the stop
             const suggestionDiv = document.createElement('div');
             suggestionDiv.classList.add('suggestion');
             suggestionDiv.textContent = suggestion.name;
+
+            // when a stop is selected, set the relevant input field (origin/destination) to the name of the stop
             suggestionDiv.addEventListener('click', () => {
+                console.log(suggestion.name);
                 field.value = suggestion.name;
                 if (field === originField) {
                     console.log("Origin: ", suggestion);
+
+                    // sets origin variable = the chosen stop object
                     origin = suggestion;
                 } else if (field === destinationField) {
                     console.log("Destination: ", suggestion);
+
+                    // sets destination variable = the chosen stop object
                     destination = suggestion;
                 }
+
+                // empty and hide suggestionsContainer div after use 
                 suggestionsContainer.innerHTML = '';
                 suggestionsContainer.style.display = 'none';
             });
+
+            // appends suggestionDivs to suggestionContainer div
             suggestionsContainer.appendChild(suggestionDiv);
         });
     }
 
+    // define journey element
     let journey = document.getElementById("journey");
-    let tripContainer = document.getElementById('tripwrapper');
 
-    // journey.addEventListener('click', () => {
-    //     console.log("Origin ex: ", origin);
-    //     console.log("Destination ex: ", destination);
-    //     displayTrip(getJourney(origin, destination));
-    // })
 
+    // retrieves journey (3 trips) based on origin and destination, displays them
     journey.addEventListener('click', async () => {
-        console.log("Origin ex: ", origin);
-        console.log("Destination ex: ", destination);
-        
         try {
             const data = await getJourney(origin, destination);
             displayTrips(data);
         } catch (error) {
             console.error("Error fetching journey:", error);
-            // Handle error here if needed
         }
     });
 
-    
-    // function displayTrip(tripArray) {
-    //     console.log("Displaying trip data:");
-    //     console.log("Received tripArray:", tripArray);
-    
-    //     const tripContainer = document.getElementById('tripwrapper');
-    //     tripContainer.innerHTML = ''; // Clear previous content (if any)
-    
-    //     tripArray.forEach((trip, tripIndex) => {
-    //         console.log(`Trip ${tripIndex + 1}:`, trip);
-    
-    //         trip.Leg.forEach((leg, legIndex) => {
-    //             console.log(`Leg ${legIndex + 1} of Trip ${tripIndex + 1}:`, leg);
-    
-    //             // Access properties of Origin and Destination
-    //             const originName = leg.Origin.name;
-    //             const destinationName = leg.Destination.name;
-    //             const departureTime = leg.Origin.time;
-    //             const arrivalTime = leg.Destination.time;
-    
-    //             // Create a div for each leg
-    //             const legDiv = document.createElement('div');
-    //             legDiv.classList.add('leg-item'); // Optional: Add a class for styling
-    
-    //             // Populate the div with leg information
-    //             legDiv.innerHTML = `
-    //                 <h3>Leg ${legIndex + 1} of Trip ${tripIndex + 1}</h3>
-    //                 <p>Origin: ${originName}</p>
-    //                 <p>Destination: ${destinationName}</p>
-    //                 <p>Departure Time: ${departureTime}</p>
-    //                 <p>Arrival Time: ${arrivalTime}</p>
-    //                 <!-- Add more details as needed -->
-    //             `;
-    
-    //             // Append the leg div to the trip container
-    //             tripContainer.appendChild(legDiv);
-    //         });
-    //     });
-    // }
-    
+    // displays journey data as retrieved from getJourney
     function displayTrips(tripArray) {
-        console.log("Displaying trip data:");
-        console.log("Received tripArray:", tripArray);
-    
+
         const tripContainer = document.getElementById('tripwrapper');
-        tripContainer.innerHTML = ''; // Clear previous content (if any)
-    
+        tripContainer.innerHTML = '';
+
         tripArray.forEach((trip, tripIndex) => {
             console.log(`Trip ${tripIndex + 1}:`, trip);
-    
-            const originName = trip.Leg[0].Origin.name; // Assuming the first leg contains the origin info
+
+            const originName = trip.Leg[0].Origin.name;
             const destinationName = trip.Leg[trip.Leg.length - 1].Destination.name; // Last leg for destination
             const arrivalTime = trip.Leg[trip.Leg.length - 1].Destination.time; // Arrival time of last leg
-    
+
             // Create a div for each trip
             const tripDiv = document.createElement('div');
-            tripDiv.classList.add('trip-item'); // Optional: Add a class for styling
+            tripDiv.classList.add('trip-item');
             tripDiv.innerHTML = `
-                <h3>${originName} -> ${destinationName}, Arrival Time: ${arrivalTime}</h3>
-                <button class="toggle-legs-btn" data-trip-index="${tripIndex}">Show Legs</button>
+                <h3>${originName} -> ${destinationName}, Ankomst: ${arrivalTime}</h3>
+                <button class="toggle-legs-btn" data-trip-index="${tripIndex}">Vis rejsen</button>
                 <div class="legs-container" style="display: none;"></div>
             `;
-    
-            // Append tripDiv to tripContainer
             tripContainer.appendChild(tripDiv);
-    
-            // Add event listener to toggle legs visibility
+
             const toggleLegsBtn = tripDiv.querySelector('.toggle-legs-btn');
             toggleLegsBtn.addEventListener('click', () => {
                 const legsContainer = tripDiv.querySelector('.legs-container');
                 if (legsContainer.style.display === 'none') {
                     legsContainer.style.display = 'block';
-                    toggleLegsBtn.textContent = 'Hide Legs';
+                    toggleLegsBtn.textContent = 'Skjul rejsen';
                     displayLegs(legsContainer, trip.Leg); // Display legs for this trip
                 } else {
                     legsContainer.style.display = 'none';
-                    toggleLegsBtn.textContent = 'Show Legs';
+                    toggleLegsBtn.textContent = 'Vis rejsen';
                 }
             });
         });
     }
-    
-    
+
+
     function displayLegs(container, legs) {
-        container.innerHTML = ''; // Clear previous content (if any)
+        container.innerHTML = ''
         legs.forEach((leg, legIndex) => {
             // Create a div for each leg
             const legDiv = document.createElement('div');
-            legDiv.classList.add('leg-item'); // Optional: Add a class for styling
+            legDiv.classList.add('leg-item');
             legDiv.innerHTML = `
-                <p><strong>Leg ${legIndex + 1}:</strong></p>
-                <p>Origin: ${leg.Origin.name}</p>
-                <p>Destination: ${leg.Destination.name}</p>
-                <p>Departure Time: ${leg.Origin.time}</p>
-                <p>Arrival Time: ${leg.Destination.time}</p>
+                <p><strong>${legIndex + 1}. forbindelse: </strong></p>
+                <p> ${leg.name}</p><i class="fa ${icons[leg.type]}"></i>
+                <p>Fra: ${leg.Origin.name} til: ${leg.Destination.name}</p>
+                <p></p>
+                <p>Afgang: ${leg.Origin.time}</p>
+                <p>Ankomst: ${leg.Destination.time}</p>
             `;
             container.appendChild(legDiv);
         });
     }
-    
-    
-    
-
-    // if (/* origin and destination are not empty */ origin && destination) {
-    //     console.log("Origin and destination ready. ")
-    //     getJourney(origin, destination);
-    // }
 });
 
 
@@ -202,39 +173,26 @@ async function getData(location) {
     let response = await fetch(apiUrl);
     let data = await response.json();
 
-    /*
-    fetch(apiUrl)
-    .then (response => {
-        return response.json();
-    })
-    .then (data => {
-        //console.log(data);
-
-        if (typeof data.LocationList.StopLocation !== 'undefined') {
-            console.log(data.LocationList.StopLocation);
-        } else if (typeof data.LocationList.CoordLocation !== 'undefined') {
-            console.log(data.LocationList.CoordLocation);
-        }
-    });*/
-
     console.log(data);
-    return (data);    
+    return (data);
 }
 
+// retrieves a full journey object (3 trips) based on selected origin and destination stops
 async function getJourney(origin, destination) {
     console.log("Origin in journey: ", origin);
     console.log("Destination in journey: ", destination);
-    
+
     let baseUrl = "http://xmlopen.rejseplanen.dk/bin/rest.exe/";
 
     let journeyUrl = baseUrl.concat(
-        "trip?originId=", origin.id, 
+        "trip?originId=", origin.id,
         "&destCoordX=", destination.x,
-        "&destCoordY=", destination.y, 
-        "&destCoordName=", destination.name.replace( /[()\\\/]/g, "" ), "&format=json"
+        "&destCoordY=", destination.y,
+        "&destCoordName=", destination.name.replace(/[()\\\/]/g, ""),
+        "&date=", formatDate(document.getElementById('date').value),
+        "&time=", document.getElementById('time').value,
+        "&format=json"
     ).replace(/\s/g, '');
-
-    // let journeyUrl = "https://xmlopen.rejseplanen.dk/bin/rest.exe/trip?originId=821200902&destCoordX=9858829&destCoordY=57114511&destCoordName=VadumKirkevejEllehammervejVadum&format=json";
 
     console.log("JourneyUrl: ", journeyUrl);
 
@@ -242,11 +200,34 @@ async function getJourney(origin, destination) {
     let data = await response.json();
 
     if (typeof data.TripList.Trip !== 'undefined') {
-        let tripArray = data.TripList.Trip;    
+        let tripArray = data.TripList.Trip;
         console.log("Returning trip data: ", tripArray);
         return tripArray;
     }
 
     console.log("Returning journey data: ", data);
     return (data);
+}
+
+function setTime() {
+    const timeField = document.getElementById('time');
+
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+
+    const currentTime = `${hours}:${minutes}`;
+
+    timeField.value = currentTime;
+}
+
+function formatDate(date) {
+    let parts = date.split('-');
+    let day = parts[2];
+    let month = parts[1];
+    let year = parts[0].substring(2); // Extract last two digits of the year
+
+    let formattedDate = day + '.' + month + '.' + year;
+    console.log(formattedDate)
+    return formattedDate;
 }

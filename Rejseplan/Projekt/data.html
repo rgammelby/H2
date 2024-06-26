@@ -1,25 +1,43 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="./style.css">
-    </head>
-    <script src="./getData.js"></script>
-    <body>
-    <div id="data">
-        Herunder vil data fra Rejseplanen fremgå:<br>
-    
-        <input type="text" id="origin" class="input"><br>
-        <input type="text" id="destination" class="input"><br>
-    
-        <input type="button" id="journey" class="input" value="Find rejse">
-    
-        <div id="suggestions">
-    
+
+<!-- HEJ SASCHA DU SKAL FIKSE FONTAWESOME CDN PROBLEM :))))) -->
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<script src="./getData.js"></script>
+
+<body>
+    <div id="data">       
+
+        <div id="inputwrapper">
+            <div class="row">
+            
+                <label for="origin">Fra</label>
+                <input type="text" id="origin" class="input field">
+                <label for="date">Dato</label>
+                <input type="date" id="date" class="input-secondary">
+            </div>
+            <div class="row">
+
+                <label for="destination">Til</label>
+                <input type="text" id="destination" class="input field">
+                <label for="time">Tid</label>
+                <input type="time" id="time" class="input-secondary">
+            </div>
         </div>
-    
+
+        <input type="button" id="journey" class="input btn" value="Find rejse">
+
+        <div id="suggestions">
+
+        </div>
+
         <div id="tripwrapper">
-    
+
         </div>
     </div>
-    </body>
+</body>
+
 </html>
